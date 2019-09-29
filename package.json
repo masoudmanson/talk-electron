@@ -1,0 +1,53 @@
+{
+  "name": "desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Talk Messaging Platform Desktop Application",
+  "author": "Masoud Amjadi",
+  "build": {
+    "appId": "pod.talk.land"
+  },
+  "main": "public/electron.js",
+  "homepage": "./",
+  "dependencies": {
+    "cross-env": "^6.0.0",
+    "electron-is-dev": "^1.1.0",
+    "frameless-titlebar": "^1.0.8",
+    "podauth": "^1.2.4",
+    "podchatweb": "^0.48.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.2"
+  },
+  "scripts": {
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test --env=jsdom",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.2",
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0",
+    "wait-on": "^3.3.0"
+  }
+}

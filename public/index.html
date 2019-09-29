@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#FFFFFF"/>
+    <meta name="description" content="Talk Messaging Platform Desktop Application"/>
+    <link rel="apple-touch-icon" href="logo192.png"/>
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
+    <title>Talk Desktop</title>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="title-bar">
+    <div id="title">Talk Desktop</div>
+    <div id="title-bar-btns">
+        <button id="min-btn"></button>
+        <button id="max-btn"></button>
+        <button id="close-btn"></button>
+    </div>
+</div>
+<div id="content"></div>
+<script>
+    (function () {
+
+        const remote = require('electron').remote;
+
+        function init() {
+            document.getElementById("min-btn").addEventListener("click", function (e) {
+                const window = remote.getCurrentWindow();
+                window.minimize();
+            });
+
+            document.getElementById("max-btn").addEventListener("click", function (e) {
+                const window = remote.getCurrentWindow();
+                if (window.isMaximized()) {
+                    window.unmaximize();
+                } else {
+                    window.maximize();
+                }
+            });
+
+            document.getElementById("close-btn").addEventListener("click", function (e) {
+                const window = remote.getCurrentWindow();
+                window.close();
+            });
+        };
+
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+                init();
+            }
+        };
+    })();
+</script>
+</body>
+</html>
