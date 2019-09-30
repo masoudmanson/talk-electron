@@ -1,7 +1,13 @@
 import React, {Component} from "react";
 import {PodchatJSX} from "podchatweb";
-import {auth} from "podauth";
+import {auth} from "podauth/src/auth";
+import Loading from 'react-loading-components';
+import cookie from "js-cookie";
+
 import './App.css';
+
+const electron = window.require("electron");
+const ipc = electron.ipcRenderer;
 
 export default class App extends Component {
 
@@ -21,6 +27,7 @@ export default class App extends Component {
     componentDidMount() {
         if (!this.state.token) {
             auth({
+                codeVerifierStr: 'gt252f23rf2',
                 clientId: "88413l69cd4051a039cf115ee4e073",
                 scope: "social:write",
                 redirectUri: "http://127.0.0.1:3000",
@@ -33,20 +40,19 @@ export default class App extends Component {
     }
 
     onNewMessage(msg) {
-        console.log('fuckin shit arried', msg);
-
-        // let myNotification = new Notification(msg.participant.name, {
-        //     body: msg.message
-        // })
+        console.log('New Message Arrived', msg);
+        ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
+        //this.chat.openThread(id)
     }
 
     render() {
         if (!this.state.token) {
-            return (<div>Loading ...</div>);
+            return (<Loading type='ball_triangle' width={100} height={100} fill='#c54f9c'/>);
         }
         return (
             <div>
                 <PodchatJSX token={this.state.token}
+                            ref={this.chat}
                             clearCache={this.clearCache}
                             onNewMessage={this.onNewMessage}
                             customClassName={"talkDesktopWrapper"}

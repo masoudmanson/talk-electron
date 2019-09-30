@@ -1,11 +1,11 @@
 {
-  "name": "desktop",
+  "name": "Talk.Desktop",
   "version": "0.1.0",
   "private": true,
   "description": "Talk Messaging Platform Desktop Application",
   "author": "Masoud Amjadi",
   "build": {
-    "appId": "pod.talk.land"
+    "appId": "Talk.Desktop"
   },
   "main": "public/electron.js",
   "homepage": "./",
@@ -13,10 +13,12 @@
     "cross-env": "^6.0.0",
     "electron-is-dev": "^1.1.0",
     "frameless-titlebar": "^1.0.8",
+    "node-notifier": "^6.0.0",
     "podauth": "^1.2.4",
     "podchatweb": "^0.48.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-loading-components": "^1.1.12",
     "react-scripts": "3.1.2"
   },
   "scripts": {
