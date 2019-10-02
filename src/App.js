@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {PodchatJSX} from "podchatweb";
 import {auth} from "podauth/src/auth";
 import Loading from 'react-loading-components';
-import cookie from "js-cookie";
 
 import './App.css';
 
@@ -27,10 +26,10 @@ export default class App extends Component {
     componentDidMount() {
         if (!this.state.token) {
             auth({
-                codeVerifierStr: 'gt252f23rf2',
+                codeVerifierStr: '23fvxct43twegs34',
                 clientId: "88413l69cd4051a039cf115ee4e073",
                 scope: "social:write",
-                redirectUri: "http://127.0.0.1:3000",
+                redirectUri: "talk://login",//http://127.0.0.1:3000",
                 timeRemainingTimeout: 800,
                 onNewToken: token => {
                     this.setState({token: token});
@@ -39,8 +38,8 @@ export default class App extends Component {
         }
     }
 
-    onNewMessage(msg) {
-        console.log('New Message Arrived', msg);
+    onNewMessage(msg, t, tid) {
+        console.log('New Message Arrived', msg, t, tid);
         ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
         //this.chat.openThread(id)
     }

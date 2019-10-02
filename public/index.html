@@ -12,14 +12,14 @@
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="title-bar">
-    <div id="title">T a l k &nbsp; D e s k t o p</div>
-    <div id="title-bar-btns">
-        <button id="min-btn"></button>
-        <button id="max-btn"></button>
-        <button id="close-btn"></button>
-    </div>
-</div>
+<!--<div id="title-bar">-->
+    <!--<div id="title">T a l k &nbsp; D e s k t o p</div>-->
+    <!--<div id="title-bar-btns">-->
+        <!--<button id="min-btn"></button>-->
+        <!--<button id="max-btn"></button>-->
+        <!--<button id="close-btn"></button>-->
+    <!--</div>-->
+<!--</div>-->
 <div id="content"></div>
 <script>
     (function () {
@@ -28,28 +28,28 @@
         var TMP = {maximized: false};
 
         function init() {
-            document.getElementById("min-btn").addEventListener("click", function (e) {
-                const window = remote.getCurrentWindow();
-                window.minimize();
-            });
-
-            document.getElementById("max-btn").addEventListener("click", function (e) {
-                const window = remote.getCurrentWindow();
-                console.log("window.isMaximized()", TMP.maximized);
-
-                if (TMP.maximized == true) {
-                    window.unmaximize();
-                    TMP.maximized = false;
-                } else {
-                    window.maximize();
-                    TMP.maximized = true;
-                }
-            });
-
-            document.getElementById("close-btn").addEventListener("click", function (e) {
-                const window = remote.getCurrentWindow();
-                window.close();
-            });
+            // document.getElementById("min-btn").addEventListener("click", function (e) {
+            //     const window = remote.getCurrentWindow();
+            //     window.minimize();
+            // });
+            //
+            // document.getElementById("max-btn").addEventListener("click", function (e) {
+            //     const window = remote.getCurrentWindow();
+            //     console.log("window.isMaximized()", TMP.maximized);
+            //
+            //     if (TMP.maximized == true) {
+            //         window.unmaximize();
+            //         TMP.maximized = false;
+            //     } else {
+            //         window.maximize();
+            //         TMP.maximized = true;
+            //     }
+            // });
+            //
+            // document.getElementById("close-btn").addEventListener("click", function (e) {
+            //     const window = remote.getCurrentWindow();
+            //     window.close();
+            // });
         };
 
         document.onreadystatechange = function () {

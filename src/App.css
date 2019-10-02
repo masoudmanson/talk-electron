@@ -1,4 +1,10 @@
 .talkDesktopWrapper {
+    height: 100vh;
+}
+
+
+/*
+.talkDesktopWrapper {
     height: calc(100vh - 25px);
 }
 
@@ -147,6 +153,11 @@ input {
 }
 
 ._1Lqlk._1w4q8 {
+    border-left: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+}
+
+._1Lqlk._3KVZZ {
     border-left: solid 1px #ddd;
 }
 
@@ -491,6 +502,12 @@ ul._1D92N li._1MUFa._3IhAb._2ybKw._1In1- div._1Lqlk._3LDkG svg {
     z-index: 10000;
 }
 
+._1Lqlk._3kBtH._2deOn ._1Lqlk.gwW4L {
+    background-color: rgba(10, 10, 10, 0.7);
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(5px) !important;
+}
+
 .fancybox-inner {
     z-index: 10001;
 }
@@ -613,24 +630,4 @@ ul._1D92N li._1MUFa._3IhAb._2ybKw._1In1- div._1Lqlk._3LDkG svg {
     padding: 10px !important;
     background-color: #f4f4f4;
 }
-
-/**
- * Slack TEMP
- */
-
-.SlackToolbar {
-    border-bottom: 1px solid #dddddd;
-    display: flex;
-    flex: 1;
-    height: 50px;
-}
-
-.SlackSide, .SlackSection {
-    flex: 1;
-}
-
-.SlackContainer {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
+*/
