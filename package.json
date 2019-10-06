@@ -5,15 +5,17 @@
   "description": "Talk Messaging Platform Desktop Application",
   "author": "Masoud Amjadi",
   "build": {
-    "appId": "Talk.Desktop",
-    "protocols": [
-      {
-        "name": "talk",
-        "schemes": [
-          "talk"
-        ]
-      }
-    ]
+    "appId": "talk.pod.land",
+    "protocols": {
+      "name": "talk",
+      "schemes": [
+        "talk"
+      ]
+    },
+    "mac": {
+      "category": "talk.pod.land"
+    },
+    "win": {}
   },
   "main": "public/electron.js",
   "homepage": "./",
@@ -21,6 +23,8 @@
     "cross-env": "^6.0.0",
     "electron-is-dev": "^1.1.0",
     "node-notifier": "^6.0.0",
+    "node-static": "^0.7.11",
+    "passport-oauth2": "^1.5.0",
     "podauth": "^1.2.6",
     "podchatweb": "^0.48.4",
     "protocol": "^0.1.4",
@@ -37,8 +41,8 @@
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
-    "build": "yarn react-build && yarn electron-build",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "build": "cls && yarn react-build && yarn electron-build",
+    "start": "cls && concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": "react-app"

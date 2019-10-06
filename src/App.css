@@ -1,10 +1,4 @@
 .talkDesktopWrapper {
-    height: 100vh;
-}
-
-
-/*
-.talkDesktopWrapper {
     height: calc(100vh - 25px);
 }
 
@@ -553,7 +547,7 @@ ul._1D92N li._1MUFa._3IhAb._2ybKw._1In1- div._1Lqlk._3LDkG svg {
 }
 
 ._1Lqlk._2z2Ea._22A7X._1qySD {
-    background-color: #fcffea !important;
+    background-color: #ecffd2 !important;
 }
 
 ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD {
@@ -630,4 +624,4 @@ ul._1D92N li._1MUFa._3IhAb._2ybKw._1In1- div._1Lqlk._3LDkG svg {
     padding: 10px !important;
     background-color: #f4f4f4;
 }
-*/
+

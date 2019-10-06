@@ -5,11 +5,15 @@ const notifier = require('node-notifier');
 const fs = require('fs');
 const request = require('request');
 const url = require('url');
+const passport = require('passport-oauth2');
+// const Auth = require('podauth');
 
 let mainWindow;
 let mainWindowFocus = false;
 let deeplinkingUrl;
 const gotTheLock = app.requestSingleInstanceLock();
+
+logEverywhere('ElectronJS main - Aval man load shodam ' + new Date());
 
 if (!gotTheLock) {
     app.quit();
@@ -24,18 +28,22 @@ if (!gotTheLock) {
         logEverywhere("app.makeSingleInstance# " + deeplinkingUrl);
 
         if (mainWindow) {
-            if (mainWindow.isMinimized()) {
+            if (mainWindow.isMinimized() || !mainWindow.isVisible()) {
                 mainWindow.restore();
             }
 
             mainWindow.restore();
+            mainWindow.show();
             mainWindow.focus();
         }
     });
 
-    app.setAppUserModelId("Talk-Desktop");
+    app.setAppUserModelId("talk.pod.land");
     app.setAsDefaultProtocolClient('talk');
-    protocol.registerSchemesAsPrivileged([{ scheme: 'talk', privileges: { standard: true, secure: true, supportFetchAPI: true } }]);
+    protocol.registerSchemesAsPrivileged([{
+        scheme: 'talk',
+        privileges: {standard: true, secure: true, supportFetchAPI: true}
+    }]);
 
     app.on('will-finish-launching', function () {
         app.on('open-url', function (event, url) {
@@ -46,18 +54,25 @@ if (!gotTheLock) {
     });
 
     app.on("ready", function () {
+        logEverywhere('App ready shod!');
         protocol.registerHttpProtocol('talk', (request) => {
-
+            logEverywhere('Ye Req az samte talk:// umad');
             logEverywhere(request);
+            // logEverywhere('Quit the mother fuciking app');
+            //
+            // mainWindow = null;
+            // app.isQuiting = true;
+            // app.quit();
+
             try {
                 let finalUrl = url.parse(request.url);
-                logEverywhere("finalUrl" + finalUrl);
-                if (finalUrl.path.match(/login\/\?code/)) {
-                    // Get code from url query and send code to ipcMain event
-                    logEverywhere('Some shit has happened');
-                    // authenticator.fetchToken(url.query.split('=')[1]);
+                logEverywhere("finalUrl" + JSON.stringify(finalUrl));
+                mainWindow.webContents.send('authCode', {code: finalUrl.query.substring(5)});
+                if (finalUrl.path.match(/\?code/)) {
+                    logEverywhere('Fuckee contains Code');
+                    mainWindow.webContents.send('authCode', {code: finalUrl.query.substring(5)});
                 }
-            } catch(e) {
+            } catch (e) {
                 logEverywhere(e);
             }
         });
@@ -83,6 +98,33 @@ if (!gotTheLock) {
 
     app.on('browser-window-blur', () => {
         mainWindowFocus = false;
+    });
+
+    ipcMain.on('noToken', () => {
+        logEverywhere('Get a fuckin token');
+        // mainWindow.webContents.send('authToken', {token: '6aab4fbf9d09445e8c1be54592b45047'});
+        // Auth.auth({
+        //     codeVerifierStr: '23fvxct43twegs34',
+        //     clientId: "88413l69cd4051a039cf115ee4e073",
+        //     scope: "social:write",
+        //     redirectUri: "talk://login",
+        //     timeRemainingTimeout: 800,
+        //     onNewToken: token => {
+        //         mainWindow.webContents.send('authToken', {token: token});
+        //     }
+        // });
+
+        passport.use(new passport.OAuth2Strategy({
+                authorizationURL: 'https://accounts.pod.land/oauth2',
+                tokenURL: 'https://accounts.pod.land/oauth2/token',
+                clientID: "88413l69cd4051a039cf115ee4e073",
+                clientSecret: "371d2407",
+                callbackURL: "talk://login"
+            },
+            function(accessToken, refreshToken, profile, cb) {
+                console.log(accessToken, refreshToken, profile, cb);
+            }
+        ));
     });
 
     ipcMain.on('notify', (event, msg, name, img) => {
@@ -114,9 +156,10 @@ function createWindow() {
         height: 700,
         minHeight: 550,
         minWidth: 350,
-        // frame: false,
-        // titleBarStyle: 'customButtonsOnHover',
-        // transparent: true,
+        frame: false,
+        show: false,
+        titleBarStyle: 'customButtonsOnHover',
+        transparent: true,
         webPreferences: {
             nodeIntegration: true
         }
@@ -130,6 +173,10 @@ function createWindow() {
         slashes: true
     }));
 
+    mainWindow.on('ready-to-show', function(){
+        mainWindow.show();
+    });
+
     // mainWindow.webContents.on('did-get-redirect-request', function (event, oldUrl, newUrl) {
     //     logEverywhere("Take these bullshit" + event + "*************" + oldUrl + "*************" + newUrl);
     // });
@@ -140,31 +187,31 @@ function createWindow() {
         deeplinkingUrl = process.argv.slice(1);
     }
     logEverywhere("createWindow# " + deeplinkingUrl);
-
-    var appIcon = null;
-    appIcon = new Tray(__dirname + '/logo192.png');
-
-    appIcon.on('click', () => {
-        mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
-    })
-
-    var contextMenu = Menu.buildFromTemplate([
-        {
-            label: 'Open Talk', click: function () {
-                mainWindow.show();
-            }
-        },
-        {
-            label: 'Quit', click: function () {
-                mainWindow = null;
-                app.isQuiting = true;
-                app.quit();
-            }
-        }
-    ]);
-
-    appIcon.setToolTip('Talk Desktop');
-    appIcon.setContextMenu(contextMenu);
+    //
+    // var appIcon = null;
+    // appIcon = new Tray(__dirname + '/logo192.png');
+    //
+    // appIcon.on('click', () => {
+    //     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+    // })
+    //
+    // var contextMenu = Menu.buildFromTemplate([
+    //     {
+    //         label: 'Open Talk', click: function () {
+    //             mainWindow.show();
+    //         }
+    //     },
+    //     {
+    //         label: 'Quit', click: function () {
+    //             mainWindow = null;
+    //             app.isQuiting = true;
+    //             app.quit();
+    //         }
+    //     }
+    // ]);
+    //
+    // appIcon.setToolTip('Talk Desktop');
+    // appIcon.setContextMenu(contextMenu);
 
     mainWindow.on("closed", () => (mainWindow = null));
 
@@ -177,9 +224,9 @@ function createWindow() {
         return false;
     });
 
-    mainWindow.on('show', function () {
-        appIcon.setHighlightMode('always');
-    });
+    // mainWindow.on('show', function () {
+    //     appIcon.setHighlightMode('always');
+    // });
 }
 
 var download = function (uri, filename, callback) {
