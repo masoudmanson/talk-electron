@@ -1,7 +1,6 @@
 const {BrowserWindow} = require('electron');
 const Store = require('./store.js');
 const Request = require('request');
-const http = require('http');
 const Hashes = require('jshashes');
 
 class OauthPKCE {
@@ -51,6 +50,8 @@ class OauthPKCE {
     }
 
     generateToken(forceLoginPage) {
+        console.log('Generate token called');
+        console.log(this);
         return new Promise((resolve, reject) => {
             if (!this.code || forceLoginPage) {
                 this.getCode();
@@ -60,41 +61,54 @@ class OauthPKCE {
             this.makeRequest().then(response => {
                 this.refreshTokenStr = response.refresh_token;
                 this.store.set("refreshToken", response.refresh_token);
-                // this.onTokenExpire((response.expires_in - this.timeRemainingTimeout) * 1000);
+                this.onTokenExpire((response.expires_in - this.timeRemainingTimeout) * 1000);
                 resolve(response.access_token);
             }, error => {
                 if (this.onError(error)) {
-                    this.reset();
-                    this.generateToken(true);
+                    if (this.refreshTokenStr && this.codeVerifierStr) {
+                        this.generateToken();
+                    } else {
+                        this.reset();
+                        this.generateToken(true);
+                    }
                 }
             });
         });
     }
 
     refreshToken() {
-        const {timeRemainingTimeout, onError} = this;
+        console.log('Refresh token called');
+        console.log(this);
         return new Promise((resolve, reject) => {
             this.makeRequest(true).then(response => {
-                this.store.set("refreshToken", this.refreshTokenStr = response.refresh_token);
+                this.refreshTokenStr = response.refresh_token;
+                this.store.set("refreshToken", response.refresh_token);
+                console.log('## New refresh token', response.refresh_token);
+                console.log('** New access token', response.access_token);
                 this.onTokenExpire((response.expires_in - this.timeRemainingTimeout) * 1000);
                 resolve(response.access_token);
             }, error => {
-                if (onError(error)) {
-                    this.reset();
-                    this.generateToken(true);
+                if (this.onError(error)) {
+                    if (this.refreshTokenStr && this.codeVerifierStr) {
+                        this.refreshToken();
+                    } else {
+                        this.reset();
+                        this.generateToken(true);
+                    }
                 }
             });
         });
     }
 
     onTokenExpire(timeout) {
+        console.log('Refresh Token in ', timeout);
         const {onError, onNewToken} = this;
         setTimeout(e => {
             this.refreshToken().then(onNewToken, error => {
-                if (onError(error)) {
-                    this.reset();
-                    this.generateToken(true);
-                }
+                // if (onError(error)) {
+                //     this.reset();
+                //     this.generateToken(true);
+                // }
             });
         }, timeout);
     }
@@ -141,7 +155,8 @@ class OauthPKCE {
 
             Request.post(options, (error, response, body) => {
                 if (error) {
-                    reject(JSON.parse(body));
+                    console.log('Error', error);
+                    reject(error);
                 } else {
                     return resolve(JSON.parse(body));
                 }
@@ -168,8 +183,8 @@ class OauthPKCE {
 
         this.guiWindow = new BrowserWindow({
             width: 400,
-            height: 550,
-            minHeight: 550,
+            height: 580,
+            minHeight: 560,
             minWidth: 350,
             alwaysOnTop: true,
             webPreferences: {
@@ -177,21 +192,19 @@ class OauthPKCE {
             }
         });
         this.guiWindow.removeMenu();
-        this.guiWindow.loadURL(this.urlGenerator(), {"extraHeaders": "pragma: no-cache\n"});
+        this.guiWindow.loadURL(this.urlGenerator());
 
-        this.guiWindow.webContents.openDevTools();
+        // this.guiWindow.webContents.openDevTools();
 
         this.guiWindow.on('did-finish-load', function () {
-            this.guiWindow.webContents.session.clearCache(function () {
-                this.guiWindow.insertCSS('html, body {background: red !important;} .login-form form, .faq {box-shadow: none !important;} .login-form {margin: auto !important;} .form-header, #langDropdown, #form-footer {display: none !important;}');
-            });
+            this.guiWindow.insertCSS('html, body {background: none !important;} .login-form form, .faq {box-shadow: none !important;} .login-form {margin: auto !important;} .form-header, #langDropdown, #form-footer {display: none !important;}');
         });
 
         this.guiWindow.restore();
         this.guiWindow.focus();
     }
 
-    auth(config) {
+    auth() {
         if (!this.code) {
             this.getCode();
             return;

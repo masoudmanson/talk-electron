@@ -21,7 +21,7 @@ const Auth = new PKCE({
     clientId: "88413l69cd4051a039cf115ee4e073",
     scope: "social:write",
     redirectUri: "talk://login",
-    timeRemainingTimeout: 800,
+    timeRemainingTimeout: 890,
     onNewToken: token => {
         mainWindow.webContents.send('authToken', {token: token});
     }

@@ -328,6 +328,24 @@ input {
     color: #9f456e !important;
 }
 
+._1Lqlk._1k2KS {
+    color: #c1aeb6 !important;
+    font-weight: 300 !important;
+}
+
+._1Lqlk._2wyMJ {
+    color: #555;
+}
+
+._1MUFa._3IhAb._2ybKw._1In1- ._1Lqlk._2wyMJ {
+    color: #fff !important;
+    margin-top: 10px !important;
+}
+
+._2SUne._1njiY._2Jz5s._24QOl {
+    margin-top: -4px !important;
+}
+
 ._1Lqlk._2z2Ea._1YpKq div._1Lqlk._3LDkG svg {
     margin-left: 17px !important;
     margin-top: -4px !important;
@@ -493,7 +511,16 @@ button._2kW37._15T4e {
 
 a._2gzLL {
     border-bottom: none !important;
-    color: dodgerblue !important;
+    color: #9d85bf !important;
+    -webkit-transition: color 0.2s;
+    -moz-transition: color 0.2s;
+    -ms-transition: color 0.2s;
+    -o-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+a._2gzLL:hover {
+    color: #9f456e !important;
 }
 
 ._1Lqlk._3kBtH.DVZpE {
