@@ -41,7 +41,7 @@ export default class App extends Component {
 
     render() {
         if (!this.state.token) {
-            return (<Loading type='ball_triangle' width={100} height={100} fill='#7A325D'/>);
+            return (<Loading type='ball_triangle' width={100} height={100} fill='#9f456e'/>);
         }
         return (
             <div>

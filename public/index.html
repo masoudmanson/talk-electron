@@ -9,11 +9,22 @@
     <link rel="apple-touch-icon" href="logo192.png"/>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
     <title>Talk Desktop</title>
-    <!--<base href="./">-->
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="title-bar">
+    <div id="title-bar-menu">
+        <button id="menu-bar-btn">☰</button>
+        <div id="menu-wrapper">
+            <ul>
+                <li>Check for updates</li>
+                <li id="menu-about">About Talk Desktop</li>
+                <hr>
+                <!--<li id="menu-signout">Change Account</li>-->
+                <li id="menu-quit">Quit Talk</li>
+            </ul>
+        </div>
+    </div>
     <div id="title">T a l k &nbsp; D e s k t o p</div>
     <div id="title-bar-btns">
         <button id="min-btn"></button>
@@ -25,8 +36,39 @@
 <script>
     (function () {
 
-        const remote = require('electron').remote;
+        const {remote, ipcRenderer} = require('electron');
+        const path = require("path");
+
         var TMP = {maximized: false};
+        var menuState = false;
+
+        document.querySelector('#content').addEventListener("click", function(e) {
+            document.getElementById('menu-wrapper').style.display = "none";
+            menuState = false;
+        });
+
+        document.getElementById("title-bar-menu").addEventListener("click", function (e) {
+            e.preventDefault();
+            if (menuState) {
+                document.getElementById('menu-wrapper').style.display = "none";
+                menuState = false;
+            } else {
+                document.getElementById('menu-wrapper').style.display = "block";
+                menuState = true;
+            }
+        });
+
+        document.getElementById("menu-quit").addEventListener("click", function (e) {
+            ipcRenderer.send('quit-app');
+        });
+
+        document.getElementById("menu-about").addEventListener("click", function (e) {
+
+        });
+
+        // document.getElementById("menu-signout").addEventListener("click", function (e) {
+        //     ipcRenderer.send('signout-app');
+        // });
 
         function init() {
             document.getElementById("min-btn").addEventListener("click", function (e) {
@@ -36,7 +78,6 @@
 
             document.getElementById("max-btn").addEventListener("click", function (e) {
                 const window = remote.getCurrentWindow();
-                console.log("window.isMaximized()", TMP.maximized);
 
                 if (TMP.maximized == true) {
                     window.unmaximize();

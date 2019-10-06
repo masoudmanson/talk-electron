@@ -22,6 +22,7 @@
   "dependencies": {
     "cross-env": "^6.0.0",
     "electron-is-dev": "^1.1.0",
+    "electron-modal": "^1.0.0",
     "node-notifier": "^6.0.0",
     "podauth": "^1.2.6",
     "podchatweb": "^0.48.4",

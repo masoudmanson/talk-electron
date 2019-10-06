@@ -11,7 +11,9 @@ const PKCE = require('./pkce.js');
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
-        windowBounds: { width: 1200, height: 700 }
+        windowBounds: { width: 1200, height: 700 },
+        codeVerifier: '',
+        refreshToken: ''
     }
 });
 
@@ -25,6 +27,7 @@ const Auth = new PKCE({
     }
 });
 
+var appIcon = null;
 let mainWindow;
 let mainWindowFocus = false;
 let deeplinkingUrl;
@@ -68,7 +71,7 @@ if (!gotTheLock) {
         protocol.registerHttpProtocol('talk', (request) => {
             try {
                 let finalUrl = url.parse(request.url);
-                mainWindow.webContents.send('authCode', {code: finalUrl.query.substring(5)});
+
                 if (finalUrl.path.match(/\?code/)) {
                     Auth.setCode(finalUrl.query.substring(5));
                 }
@@ -79,7 +82,6 @@ if (!gotTheLock) {
 
         createWindow();
 
-        var appIcon = null;
         const iconPath = path.join(__dirname, '/logo192.png');
         appIcon = new Tray(nativeImage.createFromPath(iconPath));
 
@@ -89,12 +91,12 @@ if (!gotTheLock) {
 
         var contextMenu = Menu.buildFromTemplate([
             {
-                label: 'Open Talk', click: function () {
+                label: 'مشاهده تاک', click: function () {
                     mainWindow.show();
                 }
             },
             {
-                label: 'Quit', click: function () {
+                label: 'بستن', click: function () {
                     mainWindow = null;
                     app.isQuiting = true;
                     app.quit();
@@ -131,6 +133,19 @@ if (!gotTheLock) {
         Auth.auth();
     });
 
+    ipcMain.on('quit-app', ()=>{
+        Auth.reset();
+
+        mainWindow = null;
+        app.isQuiting = true;
+        app.quit();
+    });
+
+    ipcMain.on('signout-app', ()=>{
+        // mainWindow.webContents.send('authToken', {token: null});
+        // Auth.signOut();
+    });
+
     ipcMain.on('notify', (event, msg, name, img) => {
         download(img, name, function (icon) {
             if (icon) {
@@ -144,7 +159,7 @@ if (!gotTheLock) {
                         icon: icon,
                         wait: true
                     }, function () {
-                        // mainWindow.show();
+                        mainWindow.show();
                     }).on('click', function () {
                         mainWindow.show();
                     });
@@ -171,7 +186,7 @@ function createWindow() {
         }
     });
 
-    mainWindow.removeMenu();
+    // mainWindow.removeMenu();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),

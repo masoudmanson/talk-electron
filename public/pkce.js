@@ -7,7 +7,12 @@ const Hashes = require('jshashes');
 class OauthPKCE {
     constructor(options = {}) {
         this.store = new Store({
-            configName: 'user-preferences'
+            configName: 'user-preferences',
+            defaults: {
+                windowBounds: {width: 1200, height: 700},
+                codeVerifier: '',
+                refreshToken: ''
+            }
         });
 
         this.guiWindow = null;
@@ -136,7 +141,7 @@ class OauthPKCE {
 
             Request.post(options, (error, response, body) => {
                 if (error) {
-                    reject(JSON.parse(response));
+                    reject(JSON.parse(body));
                 } else {
                     return resolve(JSON.parse(body));
                 }
@@ -155,7 +160,7 @@ class OauthPKCE {
     }
 
     getCode() {
-        if(!this.codeVerifierStr) {
+        if (!this.codeVerifierStr) {
             this.reset();
             this.codeVerifier();
             this.codeChallenge();
@@ -172,7 +177,16 @@ class OauthPKCE {
             }
         });
         this.guiWindow.removeMenu();
-        this.guiWindow.loadURL(this.urlGenerator());
+        this.guiWindow.loadURL(this.urlGenerator(), {"extraHeaders": "pragma: no-cache\n"});
+
+        this.guiWindow.webContents.openDevTools();
+
+        this.guiWindow.on('did-finish-load', function () {
+            this.guiWindow.webContents.session.clearCache(function () {
+                this.guiWindow.insertCSS('html, body {background: red !important;} .login-form form, .faq {box-shadow: none !important;} .login-form {margin: auto !important;} .form-header, #langDropdown, #form-footer {display: none !important;}');
+            });
+        });
+
         this.guiWindow.restore();
         this.guiWindow.focus();
     }
