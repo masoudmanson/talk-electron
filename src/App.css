@@ -1,5 +1,5 @@
 .talkDesktopWrapper {
-    height: calc(100vh - 26px) !important;
+    height: calc(100vh - 24px) !important;
 }
 
 html {
@@ -96,24 +96,19 @@ body {
     outline: none !important;
     height: 24px !important;
     width: 32px !important;
-    background-color: transparent !important;
+    background-color: transparent;
     border: none !important;
 }
 
 #title-bar-btns button:hover,
 #title-bar-menu button:hover {
-    background-color: #d5dbe3 !important;
+    background-color: #d5dbe3;
 }
 
 #content {
     background-color: #e5e8ec !important;
     position: relative !important;
-    height: calc(100vh - 26px) !important;
-    /*border-bottom: solid 1px #ddd !important;*/
-    /*border-right: solid 1px #ddd !important;*/
-    width: calc(100vw - 3px) !important;
-    border: solid 1px #e5e8ec;
-    border-top: none !important;
+    height: calc(100vh - 24px) !important;
 }
 
 #content > svg {
@@ -159,26 +154,20 @@ body {
     height: 1px;
 }
 
-#close-btn:before {
-    content: '';
-    position: absolute;
-    top: 11px;
-    left: 10px;
-    background-color: #555;
-    width: 12px;
-    height: 1px;
-    transform: rotate(-45deg);
+#close-btn {
+    color: #333;
+    top: -6px !important;
+    right: 1px !important;
 }
 
-#close-btn:after {
-    content: '';
-    position: absolute;
-    top: 11px;
-    left: 10px;
-    background-color: #555;
-    width: 12px;
-    height: 1px;
-    transform: rotate(45deg);
+#close-btn:hover {
+    background-color: #ff1666 !important;
+    color: #fff;
+}
+
+#close-btn:hover:after,
+#close-btn:hover:before {
+    background-color: #fff !important;
 }
 
 *::-webkit-scrollbar,
@@ -195,9 +184,9 @@ body {
     border-radius: 10px !important;
 }
 
-/*.emoji-common-telegram {*/
-/*background-image: url('assets/a279a9ce5721c10b6908b5f20cf5dda2.png') !important;*/
-/*}*/
+img {
+    text-indent: -1000000px !important;
+}
 
 input {
     background: transparent !important;
@@ -208,8 +197,13 @@ input {
     background-color: rgba(197, 79, 156, 0.1) !important;
 }
 
+.hF0PV {
+    color: #dea4ff !important;
+    font-weight: 300 !important;
+}
+
 ._1Lqlk._3hI4C {
-    background-size: auto !important;
+    background-size: 450px !important;
 }
 
 @media only screen and (min-width: 992px) {
@@ -310,13 +304,57 @@ input {
 }
 
 ._1Lqlk._1N92Q._3CpDp {
-    display: none !important;
+    position: absolute !important;
+    visibility: hidden !important;
+    margin: 4px 0 0 0 !important;
+    left: 0 !important;
+    text-align: left;
+    padding: 0 10px !important;
+    z-index: 2000;
+}
+
+@media screen and (max-width: 992px) {
+    ._1Lqlk._1N92Q._3CpDp {
+        margin: 5px -130px 0 0 !important;
+        text-align: right;
+    }
+}
+
+._1Lqlk._1N92Q._3CpDp ._1Lqlk.LIX33 ._2SUne._2gzLL._3TYfX._1i1XX:after {
+    content: '↻';
+    visibility: visible !important;
+    color: #888 !important;
+    font-size: 20px;
+}
+
+._1Lqlk._1N92Q._3CpDp ._1Lqlk.LIX33 ._2SUne._3TYfX._3n9rL._24QOl:after {
+    content: '✔';
+    visibility: visible !important;
+    color: #f2f2f2 !important;
+    font-size: 20px;
+    margin: -1px 0 0 2px !important;
 }
 
 ._1Lqlk._2z2Ea._1YpKq {
     margin-top: -54px !important;
-    width: 90% !important;
-    margin-right: 30px !important;
+    width: calc(100% - 60px) !important;
+    margin-right: 33px !important;
+}
+
+@media only screen and (max-width: 992px) {
+    ._1Lqlk._2z2Ea._1YpKq {
+        margin-top: -1px !important;
+        width: 100% !important;
+        margin-right: 0px !important;
+    }
+}
+
+._1Lqlk._22A7X.RfvgL {
+    background-color: #f2f2f2 !important;
+}
+
+._1Lqlk._2z2Ea._3pDW8 ._1Lqlk._2wyMJ > div._1Lqlk:last-child {
+    margin-top: -8px !important;
 }
 
 ._1Lqlk.mGLNB._2HEsT {
@@ -343,7 +381,7 @@ input {
 }
 
 ._2SUne._1njiY._2Jz5s._24QOl {
-    margin-top: -4px !important;
+    /*margin-top: -4px !important;*/
 }
 
 ._1Lqlk._2z2Ea._1YpKq div._1Lqlk._3LDkG svg {
@@ -641,7 +679,7 @@ ul._1D92N li._1MUFa._3IhAb._2ybKw._1In1- div._1Lqlk._3LDkG svg {
 }
 
 ._1Lqlk._2z2Ea._22A7X._1qySD {
-    background-color: #fff1c9 !important;
+    background-color: #ffefc0 !important;
 }
 
 ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD {

@@ -1,10 +1,11 @@
 {
   "name": "Talk-Desktop",
-  "version": "0.1.0",
+  "version": "0.1.15",
   "private": true,
   "description": "Talk Messaging Platform Desktop Application",
   "author": "Masoud Amjadi",
   "build": {
+    "productName": "Talk Desktop",
     "appId": "talk.pod.land",
     "protocols": {
       "name": "talk",
@@ -12,10 +13,47 @@
         "talk"
       ]
     },
-    "mac": {
-      "category": "talk.pod.land"
+    "files": [
+      "package.json"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     },
-    "win": {}
+    "win": {
+      "target": [
+        "nsis",
+        "msi"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "snap",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "resources(light)"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "talk.pod.land",
+      "repo": "talk.pod.land",
+      "private": false
+    }
   },
   "main": "public/electron.js",
   "homepage": "./",
@@ -40,7 +78,7 @@
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
-    "build": "cls && yarn react-build && yarn electron-build",
+    "build": "cls && yarn react-build && electron-builder",
     "start": "cls && concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {

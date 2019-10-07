@@ -11,7 +11,7 @@ const PKCE = require('./pkce.js');
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
-        windowBounds: { width: 1200, height: 700 },
+        windowBounds: {width: 1200, height: 700},
         codeVerifier: '',
         refreshToken: ''
     }
@@ -21,7 +21,7 @@ const Auth = new PKCE({
     clientId: "88413l69cd4051a039cf115ee4e073",
     scope: "social:write",
     redirectUri: "talk://login",
-    timeRemainingTimeout: 890,
+    timeRemainingTimeout: 300,
     onNewToken: token => {
         mainWindow.webContents.send('authToken', {token: token});
     }
@@ -82,7 +82,7 @@ if (!gotTheLock) {
 
         createWindow();
 
-        const iconPath = path.join(__dirname, '/logo192.png');
+        const iconPath = path.join(__dirname, '/assets/talk-logo2.png');
         appIcon = new Tray(nativeImage.createFromPath(iconPath));
 
         appIcon.on('click', () => {
@@ -133,7 +133,7 @@ if (!gotTheLock) {
         Auth.auth();
     });
 
-    ipcMain.on('quit-app', ()=>{
+    ipcMain.on('quit-app', () => {
         Auth.reset();
 
         mainWindow = null;
@@ -141,7 +141,7 @@ if (!gotTheLock) {
         app.quit();
     });
 
-    ipcMain.on('signout-app', ()=>{
+    ipcMain.on('signout-app', () => {
         // mainWindow.webContents.send('authToken', {token: null});
         // Auth.signOut();
     });
@@ -170,7 +170,7 @@ if (!gotTheLock) {
 }
 
 function createWindow() {
-    let { width, height } = store.get('windowBounds');
+    let {width, height} = store.get('windowBounds');
 
     mainWindow = new BrowserWindow({
         width: width,
@@ -179,14 +179,15 @@ function createWindow() {
         minWidth: 350,
         frame: false,
         show: false,
+        hasShadow: true,
         titleBarStyle: 'customButtonsOnHover',
-        transparent: true,
+        // transparent: true,
         webPreferences: {
             nodeIntegration: true
         }
     });
 
-    // mainWindow.removeMenu();
+    mainWindow.removeMenu();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
@@ -194,8 +195,8 @@ function createWindow() {
         slashes: true
     }));
 
-    mainWindow.on('ready-to-show', function(){
-        mainWindow.show();
+    mainWindow.on('ready-to-show', function () {
+        setTimeout(() => mainWindow.show(), 50);
     });
 
     mainWindow.webContents.openDevTools();
@@ -216,8 +217,8 @@ function createWindow() {
     });
 
     mainWindow.on('resize', () => {
-        let { width, height } = mainWindow.getBounds();
-        store.set('windowBounds', { width, height });
+        let {width, height} = mainWindow.getBounds();
+        store.set('windowBounds', {width, height});
     });
 }
 

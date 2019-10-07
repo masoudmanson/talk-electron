@@ -50,8 +50,6 @@ class OauthPKCE {
     }
 
     generateToken(forceLoginPage) {
-        console.log('Generate token called');
-        console.log(this);
         return new Promise((resolve, reject) => {
             if (!this.code || forceLoginPage) {
                 this.getCode();
@@ -77,14 +75,10 @@ class OauthPKCE {
     }
 
     refreshToken() {
-        console.log('Refresh token called');
-        console.log(this);
         return new Promise((resolve, reject) => {
             this.makeRequest(true).then(response => {
                 this.refreshTokenStr = response.refresh_token;
                 this.store.set("refreshToken", response.refresh_token);
-                console.log('## New refresh token', response.refresh_token);
-                console.log('** New access token', response.access_token);
                 this.onTokenExpire((response.expires_in - this.timeRemainingTimeout) * 1000);
                 resolve(response.access_token);
             }, error => {
@@ -101,7 +95,6 @@ class OauthPKCE {
     }
 
     onTokenExpire(timeout) {
-        console.log('Refresh Token in ', timeout);
         const {onError, onNewToken} = this;
         setTimeout(e => {
             this.refreshToken().then(onNewToken, error => {
@@ -109,6 +102,7 @@ class OauthPKCE {
                 //     this.reset();
                 //     this.generateToken(true);
                 // }
+                this.onTokenExpire(5000);
             });
         }, timeout);
     }
@@ -193,8 +187,6 @@ class OauthPKCE {
         });
         this.guiWindow.removeMenu();
         this.guiWindow.loadURL(this.urlGenerator());
-
-        // this.guiWindow.webContents.openDevTools();
 
         this.guiWindow.on('did-finish-load', function () {
             this.guiWindow.insertCSS('html, body {background: none !important;} .login-form form, .faq {box-shadow: none !important;} .login-form {margin: auto !important;} .form-header, #langDropdown, #form-footer {display: none !important;}');
