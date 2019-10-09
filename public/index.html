@@ -33,16 +33,31 @@
     </div>
 </div>
 <div id="content"></div>
+
+<div id="modal-overlay"></div>
+
+<div id="about-modal" class="modal-wrapper">
+    <div class="modal-content">
+        <h4>درباره تاک دسکتاپ</h4>
+        <p>جهت استفاده از نسخه ی وب به آدرس <a href="https://talk.pod.land">talk.pod.land</a> مراجعه نمائید. این نرم
+            افزار تحت لیسانس
+            <a href="https://github.com/masoudmanson/talk-electron/blob/master/LICENSE">MIT License</a> می باشد.</p>
+        <p>لطفا در صورت مواجه با هر گونه خطایی با تیم چت در ارتباط باشید.</p>
+        <img src="%PUBLIC_URL%/assets/logo.png" alt="Talk Desktop">
+        <small class="version">Version 0.1.26</small>
+    </div>
+</div>
+
 <script>
     (function () {
-
-        const {remote, ipcRenderer} = require('electron');
+        const {remote, ipcRenderer, shell} = require('electron');
         const path = require("path");
 
         var TMP = {maximized: false};
         var menuState = false;
+        var modalState = false;
 
-        document.querySelector('#content').addEventListener("click", function(e) {
+        document.querySelector('#content').addEventListener("click", function (e) {
             document.getElementById('menu-wrapper').style.display = "none";
             menuState = false;
         });
@@ -63,12 +78,16 @@
         });
 
         document.getElementById("menu-about").addEventListener("click", function (e) {
-
+            document.getElementById("about-modal").style.display = "flex";
+            document.getElementById("modal-overlay").style.display = "block";
+            modalState = "about-modal";
         });
 
-        // document.getElementById("menu-signout").addEventListener("click", function (e) {
-        //     ipcRenderer.send('signout-app');
-        // });
+        document.querySelector('#about-modal a').on('click', (e) => {
+            e.preventDefault();
+            let link = e.target.href;
+            shell.openExternal(link);
+        });
 
         function init() {
             document.getElementById("min-btn").addEventListener("click", function (e) {

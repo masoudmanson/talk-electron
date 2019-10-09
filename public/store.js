@@ -13,9 +13,13 @@ class Store {
         return this.data[key];
     }
 
-    set(key, val) {
-        this.data[key] = val;
-        fs.writeFileSync(this.path, JSON.stringify(this.data));
+    set(key, val, callback) {
+        try {
+            this.data[key] = val;
+            fs.writeFileSync(this.path, JSON.stringify(this.data));
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 

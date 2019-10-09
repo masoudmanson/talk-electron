@@ -18,11 +18,12 @@ const store = new Store({
 });
 
 const Auth = new PKCE({
-    clientId: "88413l69cd4051a039cf115ee4e073",
+    clientId: "88413l69cd4051a039cf115ee4e073",//"9896nb14440519d026c9d8b1bf290",
     scope: "social:write",
     redirectUri: "talk://login",
     timeRemainingTimeout: 300,
     onNewToken: token => {
+        logEverywhere('PKCE new token called');
         mainWindow.webContents.send('authToken', {token: token});
     }
 });
@@ -69,9 +70,10 @@ if (!gotTheLock) {
 
     app.on("ready", function () {
         protocol.registerHttpProtocol('talk', (request) => {
+            logEverywhere('protocol.registerHttpProtocol called');
             try {
                 let finalUrl = url.parse(request.url);
-
+                logEverywhere('finalURL' + JSON.stringify(finalUrl));
                 if (finalUrl.path.match(/\?code/)) {
                     Auth.setCode(finalUrl.query.substring(5));
                 }
@@ -130,6 +132,8 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('noToken', () => {
+        logEverywhere('no token req has come');
+        console.log(Auth);
         Auth.auth();
     });
 
