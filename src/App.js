@@ -22,7 +22,8 @@ export default class App extends Component {
         };
         this.state = {
             token: null,
-            chatState: ''
+            chatState: '',
+            chatReady: false
         };
         this.onPodChatReady = this.onPodChatReady.bind(this);
         this.forceReconnect = this.forceReconnect.bind(this);
@@ -50,8 +51,10 @@ export default class App extends Component {
     }
 
     forceReconnect() {
-        this.chatSDK.reconnect();
-        this.setState({chatState: 'در حال اتصال ...'});
+        if (!this.state.chatReady) {
+            this.chatSDK.reconnect();
+            this.setState({chatState: 'در حال اتصال ...'});
+        }
     }
 
     onNewMessage(msg, t, tid) {
@@ -61,10 +64,12 @@ export default class App extends Component {
     onPodChatReady(user, chatSDK) {
         this.chatSDK = chatSDK;
 
+        this.setState({chatReady: true});
+
         chatSDK.onChatState = (state) => {
             switch (state.socketState) {
                 case 1:
-                    this.setState({chatState: ''});
+                    this.setState({chatState: '', chatReady: true});
                     break;
 
                 case 3:
@@ -75,19 +80,19 @@ export default class App extends Component {
 
                     this.connectionInterval = setInterval(() => {
                         if (remaintingTime > 0) {
-                            this.setState({chatState: 'اتصال بعد از ' + --remaintingTime + ' ثانیه ...'});
+                            this.setState({chatReady: false, chatState: 'اتصال بعد از ' + --remaintingTime + ' ثانیه ...'});
                         }
                     }, 1000);
 
                     if (state.timeUntilReconnect > 0) {
                         this.connectionTimeout = setTimeout(() => {
-                            this.setState({chatState: 'در حال اتصال ...'});
+                            this.setState({chatReady: false, chatState: 'در حال اتصال ...'});
                         }, state.timeUntilReconnect);
                     }
                     break;
 
                 default:
-                    this.setState({chatState: ''});
+                    this.setState({chatReady: false, chatState: ''});
                     break;
             }
         };
@@ -112,7 +117,12 @@ export default class App extends Component {
                             {...this.serverConfig}
                             originalServer/>
                 {
-                    this.state.chatState && <div id="connection-state" onClick={this.forceReconnect}>{this.state.chatState}</div>
+                    !this.state.chatReady &&
+                    <div id="connection-state" onClick={this.forceReconnect}
+                         className={this.state.chatState ? 'has-content' : 'no-content'}>
+                        <Loading type='puff' width={20} height={20} fill='#9f456e'/>
+                        {this.state.chatState}
+                    </div>
                 }
             </div>
         )

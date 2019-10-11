@@ -18,6 +18,15 @@ body {
     bottom: 0px !important;
 }
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#electron-container {
+    animation: fadein 0.420s;
+}
+
 #title-bar {
     -webkit-app-region: drag !important;
     height: 23px !important;
@@ -45,7 +54,7 @@ body {
 }
 
 #menu-wrapper {
-    width: 200px;
+    min-width: 150px;
     -webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.05) !important;
     -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.05) !important;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1) !important;
@@ -75,7 +84,7 @@ body {
 #menu-wrapper ul li {
     font-size: 12px;
     color: #666;
-    padding: 15px;
+    padding: 12px;
     cursor: pointer;
 }
 
@@ -200,45 +209,84 @@ body {
 
 #connection-state {
     direction: rtl !important;
+    font-family: 'IRANSans';
     position: absolute;
     bottom: 10px;
     right: 10px;
-    padding: 8px 15px 10px;
+    height: 20px;
+    line-height: 20px;
+    min-width: 20px;
+    padding: 10px;
     color: #666;
     font-size: 12px;
     background-color: #fff;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     border-radius: 100px;
-    -webkit-box-shadow: 0 0pt 5px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 0pt 5px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0pt 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
     z-index: 100;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 300;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+#connection-state.no-content {
+    padding: 10px;
+}
+
+#connection-state.has-content {
+    padding: 10px 35px 10px 15px;
+}
+
+#connection-state:hover {
+    -webkit-box-shadow:  0px 0px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow:  0px 0px 10px rgba(0, 0, 0, 0.5);
+    box-shadow:  0px 0px 10px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    background-color: #9f456e;
+}
+
+#connection-state svg {
+    stroke-width: 3px !important;
+    position: absolute;
+    top: 10px;
+    right: 9px;
+}
+
+#connection-state:hover svg {
+    color: #fff !important;
+    stroke: #fff !important;
 }
 
 .modal-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
     display: none;
+    z-index: 200;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    z-index: 200;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
 
-#modal-overlay {
-    display: none;
+.modal-overlay {
     position: fixed;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 10, 15, 0.8)  !important;
     background: rgba(0, 10, 15, 0.8)  !important;
     backdrop-filter: blur(7px) !important;
-    z-index: 199 !important;
+    z-index: 201;
     top: 0;
     left: 0;
     -webkit-transition: all 0.2s;
@@ -255,30 +303,46 @@ body {
     font-family: 'IRANSans';
     background-color: #fff;
     min-width: 200px;
-    max-width: 350px;
-    z-index: 10001 !important;
+    max-width: 320px;
+    z-index: 202 !important;
     display: flex;
     flex-direction: column;
     padding: 10px 40px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    font-size: 85%;
+    font-size: 80%;
+    -webkit-box-shadow:  0px 0px 20px rgba(0, 0, 50, 0.5);
+    -moz-box-shadow:  0px 0px 20px rgba(0, 0, 50, 0.5);
+    box-shadow:  0px 0px 20px rgba(0, 0, 50, 0.5);
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
 }
 
-.modal-content:after {
+.modal-close {
     position: absolute;
     top: 10px;
-    left: 20px;
-    font-size: 26px;
-    content: '×';
+    left: 15px;
+    font-size: 16px;
     color: #ccc;
     cursor: pointer;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    color: #999;
 }
 
 .modal-content img {
     margin: auto;
-    max-width: 200px;
+    max-width: 120px;
 }
 
 .modal-content a {
@@ -523,7 +587,7 @@ input {
 }
 
 button._Hnov._1YxfV._1wRSW {
-    display: none !important;
+    /*display: none !important;*/
     background-color: #9f456e !important;
 }
 

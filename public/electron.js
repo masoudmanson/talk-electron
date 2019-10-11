@@ -1,4 +1,4 @@
-const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote} = require('electron');
+const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, shell} = require('electron');
 const path = require("path");
 const isDev = require("electron-is-dev");
 const notifier = require('node-notifier');
@@ -185,7 +185,6 @@ function createWindow() {
         show: false,
         hasShadow: true,
         titleBarStyle: 'customButtonsOnHover',
-        // transparent: true,
         webPreferences: {
             nodeIntegration: true
         }
@@ -204,6 +203,11 @@ function createWindow() {
     });
 
     mainWindow.webContents.openDevTools();
+
+    mainWindow.webContents.on('new-window', function(event, url){
+        event.preventDefault();
+        shell.openItem(url);
+    });
 
     if (process.platform == 'win32') {
         deeplinkingUrl = process.argv.slice(1);
