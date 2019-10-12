@@ -39,14 +39,12 @@
     "linux": {
       "target": [
         "deb",
-        "rpm",
-        "snap",
-        "AppImage"
+        "rpm"
       ],
       "category": "Development"
     },
     "directories": {
-      "buildResources": "resources(light)"
+      "buildResources": "resources(dark)"
     },
     "publish": {
       "provider": "github",
