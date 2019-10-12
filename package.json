@@ -3,7 +3,7 @@
   "version": "0.1.17",
   "private": true,
   "description": "Talk Messaging Platform Desktop Application",
-  "author": "Masoud Amjadi",
+  "author": "Masoud Amjadi <masoudmanson@gmail.com>",
   "build": {
     "productName": "Talk Desktop",
     "appId": "talk.pod.land",
@@ -61,7 +61,7 @@
     "electron-modal": "^1.0.0",
     "node-notifier": "^6.0.0",
     "podauth": "^1.2.6",
-    "podchatweb": "^0.48.6",
+    "podchatweb": "^0.48.7",
     "protocol": "^0.1.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

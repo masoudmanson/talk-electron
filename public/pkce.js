@@ -172,10 +172,14 @@ class OauthPKCE {
                 form: baseObject
             };
 
+            console.log('Request Options', options);
+
             Request.post(options, (error, response, body) => {
                 if (error) {
+                    console.log('Request Face Error', error);
                     reject(error);
                 } else {
+                    console.log('Request response', body);
                     return resolve(JSON.parse(body));
                 }
             });
@@ -194,11 +198,11 @@ class OauthPKCE {
     }
 
     getCode() {
-        this.reset();
-        this.codeVerifier();
-        this.codeChallenge();
-
         if (!this.guiWindow) {
+            this.reset();
+            this.codeVerifier();
+            this.codeChallenge();
+
             this.guiWindow = new BrowserWindow({
                 width: 400,
                 height: 620,
@@ -211,6 +215,9 @@ class OauthPKCE {
             });
 
             this.guiWindow.removeMenu();
+
+            this.guiWindow.webContents.openDevTools();
+
             this.guiWindow.loadURL(this.urlGenerator());
             this.guiWindow.on("closed", () => (this.guiWindow = null));
         } else {

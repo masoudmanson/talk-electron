@@ -23,7 +23,6 @@ const Auth = new PKCE({
     redirectUri: "talk://login",
     timeRemainingTimeout: 300,
     onNewToken: token => {
-        logEverywhere('PKCE new token called');
         mainWindow.webContents.send('authToken', {token: token});
     }
 });
@@ -70,10 +69,8 @@ if (!gotTheLock) {
 
     app.on("ready", function () {
         protocol.registerHttpProtocol('talk', (request) => {
-            logEverywhere('protocol.registerHttpProtocol called');
             try {
                 let finalUrl = url.parse(request.url);
-                logEverywhere('finalURL' + JSON.stringify(finalUrl));
                 if (finalUrl.path.match(/\?code/)) {
                     Auth.setCode(finalUrl.query.substring(5));
                 }
@@ -163,7 +160,8 @@ if (!gotTheLock) {
                         icon: icon,
                         wait: true
                     }, function () {
-                        mainWindow.show();
+                        // Do something after notification has been send
+                        // mainWindow.show();
                     }).on('click', function () {
                         mainWindow.show();
                     });
@@ -202,7 +200,7 @@ function createWindow() {
         setTimeout(() => mainWindow.show(), 50);
     });
 
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.webContents.on('new-window', function(event, url){
         event.preventDefault();
@@ -231,7 +229,7 @@ function createWindow() {
 }
 
 var download = function (uri, filename, callback) {
-    callback(path.join(__dirname, 'talk.png'));
+    callback(path.join(__dirname, '/assets/logo.png'));
     return;
 
     // request.head(uri, function (err, res, body) {
