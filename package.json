@@ -1,9 +1,9 @@
 {
   "name": "Talk-Desktop",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "private": true,
   "description": "Talk Messaging Platform Desktop Application",
-  "author": "Masoud Amjadi",
+  "author": "Masoud Amjadi <masoudmanson@gmail.com>",
   "build": {
     "productName": "Talk Desktop",
     "appId": "talk.pod.land",
@@ -39,9 +39,7 @@
     "linux": {
       "target": [
         "deb",
-        "rpm",
-        "snap",
-        "AppImage"
+        "rpm"
       ],
       "category": "Development"
     },
@@ -60,10 +58,11 @@
   "dependencies": {
     "cross-env": "^6.0.0",
     "electron-is-dev": "^1.1.0",
+    "electron-json-storage": "^4.1.8",
     "electron-modal": "^1.0.0",
     "node-notifier": "^6.0.0",
     "podauth": "^1.2.6",
-    "podchatweb": "^0.48.6",
+    "podchatweb": "^0.48.7",
     "protocol": "^0.1.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

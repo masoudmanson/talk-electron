@@ -1,7 +1,10 @@
 import React, {Component} from "react";
 import {PodchatJSX} from "podchatweb";
 import Loading from 'react-loading-components';
+import {version} from '../package.json';
+import CustomModal from './CustomModal';
 
+import './App-Dark.css';
 import './App.css';
 
 const electron = window.require("electron");
@@ -22,28 +25,41 @@ export default class App extends Component {
         };
         this.state = {
             token: null,
+            maximized: false,
+            menuState: false,
+            modalState: '',
             chatState: '',
-            chatReady: false
+            chatReady: false,
+            nightMode: false
         };
         this.onPodChatReady = this.onPodChatReady.bind(this);
         this.forceReconnect = this.forceReconnect.bind(this);
+        this.maximizeWindow = this.maximizeWindow.bind(this);
+        this.openTitlebarMenu = this.openTitlebarMenu.bind(this);
+        this.globalMenuCloser = this.globalMenuCloser.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.changeTheme = this.changeTheme.bind(this);
     }
 
     componentDidMount() {
         const self = this;
 
         if (!this.state.token) {
-            console.log('Get a damn token');
             ipc.send('noToken');
         }
 
         ipc.on('authToken', function (event, data) {
-            console.log('Your fuckin token', data);
             self.setState({token: data.token});
         });
-    }
 
-    componentDidUpdate() {
+        ipc.on('nightMode', function (event, data) {
+            self.setState({nightMode: data === 'true'}, ()=>{
+                document.getElementsByTagName("BODY")[0].className = (self.state.nightMode) ? 'dark-theme' : 'light-theme';
+            });
+        });
+
+        document.getElementsByTagName("BODY")[0].classList = (this.state.nightMode) ? 'dark-theme' : 'light-theme';
+        document.getElementsByTagName("BODY")[0].style.opacity = 1;
     }
 
     doLogin() {
@@ -58,7 +74,8 @@ export default class App extends Component {
     }
 
     onNewMessage(msg, t, tid) {
-        ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
+        // Disable Node Notifications for now
+        // ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
     }
 
     onPodChatReady(user, chatSDK) {
@@ -80,7 +97,10 @@ export default class App extends Component {
 
                     this.connectionInterval = setInterval(() => {
                         if (remaintingTime > 0) {
-                            this.setState({chatReady: false, chatState: 'اتصال بعد از ' + --remaintingTime + ' ثانیه ...'});
+                            this.setState({
+                                chatReady: false,
+                                chatState: 'اتصال بعد از ' + --remaintingTime + ' ثانیه ...'
+                            });
                         }
                     }, 1000);
 
@@ -98,32 +118,131 @@ export default class App extends Component {
         };
     }
 
+    minimizeWindow() {
+        const window = electron.remote.getCurrentWindow();
+        window.minimize();
+    }
+
+    maximizeWindow() {
+        const window = electron.remote.getCurrentWindow();
+
+        if (this.state.maximized === true) {
+            window.unmaximize();
+            this.setState({maximized: false});
+        } else {
+            window.maximize();
+            this.setState({maximized: true});
+        }
+    }
+
+    closeWindow() {
+        const window = electron.remote.getCurrentWindow();
+        window.close();
+    }
+
+    globalMenuCloser() {
+        document.getElementById('menu-wrapper').style.display = "none";
+        this.setState({menuState: false});
+    }
+
+    globalQuitWindow() {
+        ipc.send('quit-app');
+    }
+
+    openTitlebarMenu(e) {
+        e.preventDefault();
+        if (this.state.menuState) {
+            document.getElementById('menu-wrapper').style.display = "none";
+            this.setState({menuState: false});
+        } else {
+            document.getElementById('menu-wrapper').style.display = "block";
+            this.setState({menuState: true});
+        }
+    }
+
+    openModal(modalName) {
+        if (modalName) {
+            document.getElementById(modalName + "-modal").style.display = "flex";
+            document.getElementById('menu-wrapper').style.display = "none";
+            this.setState({menuState: false});
+            this.setState({modalState: modalName});
+        }
+    }
+
+    changeTheme() {
+        this.setState({nightMode: !this.state.nightMode}, () => {
+            console.log('Sending nightMode to main', this.state.nightMode);
+            ipc.send('nightMode', this.state.nightMode);
+            document.getElementsByTagName("BODY")[0].className = (this.state.nightMode) ? 'dark-theme' : 'light-theme';
+        });
+    }
+
     render() {
         if (!this.state.token) {
             return (
-                <div id="login-page">
-                    <Loading type='ball_triangle' width={100} height={100} fill='#9f456e'/>
-                    <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
+                <div>
+                    <div id="login-page">
+                        <Loading type='ball_triangle' width={100} height={100}
+                                 fill={(this.state.nightMode ? '#fff2cc' : '#9f456e')}/>
+                        <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
+                    </div>
                 </div>
             );
         }
         return (
             <div>
-                <PodchatJSX token={this.state.token}
-                            clearCache={this.clearCache}
-                            onNewMessage={this.onNewMessage}
-                            onReady={this.onPodChatReady}
-                            customClassName={"talkDesktopWrapper"}
-                            {...this.serverConfig}
-                            originalServer/>
-                {
-                    !this.state.chatReady &&
-                    <div id="connection-state" onClick={this.forceReconnect}
-                         className={this.state.chatState ? 'has-content' : 'no-content'}>
-                        <Loading type='puff' width={20} height={20} fill='#9f456e'/>
-                        {this.state.chatState}
+                <div id="title-bar">
+                    <div id="title-bar-menu">
+                        <button id="menu-bar-btn" onClick={(e) => this.openTitlebarMenu(e)}>☰</button>
+                        <div id="menu-wrapper">
+                            <ul>
+                                <li id="menu-about" onClick={() => this.openModal('about')}>About Talk Desktop</li>
+                                <li id="menu-theme" onClick={this.changeTheme}>Theme <span>{(this.state.nightMode) ? '☾' : '☼'}</span></li>
+                                <li id="menu-quit" onClick={this.globalQuitWindow}>Quit Talk</li>
+                            </ul>
+                        </div>
                     </div>
-                }
+                    <div id="title">T a l k &nbsp; D e s k t o p</div>
+                    <div id="title-bar-btns">
+                        <button id="min-btn" onClick={this.minimizeWindow}></button>
+                        <button id="max-btn" onClick={this.maximizeWindow}></button>
+                        <button id="close-btn" onClick={this.closeWindow}>✕</button>
+                    </div>
+                </div>
+
+                <div id="content" onClick={this.globalMenuCloser}>
+                    <PodchatJSX token={this.state.token}
+                                disableNotification
+                                clearCache={this.clearCache}
+                                onNewMessage={this.onNewMessage}
+                                onReady={this.onPodChatReady}
+                                customClassName={"talkDesktopWrapper"}
+                                {...this.serverConfig}
+                                originalServer/>
+                    {
+                        !this.state.chatReady &&
+                        <div id="connection-state" onClick={this.forceReconnect}
+                             className={this.state.chatState ? 'has-content' : 'no-content'}>
+                            <Loading type='puff' width={20} height={20}
+                                     fill={(this.state.nightMode ? '#78909C' : '#9f456e')}/>
+                            {this.state.chatState}
+                        </div>
+                    }
+                </div>
+
+                <CustomModal>
+                    <h4>درباره تاک دسکتاپ</h4>
+                    <p>جهت استفاده از نسخه ی وب به آدرس
+                        <a target="_blank"
+                           href="https://talk.pod.land"> Talk.pod.land </a> مراجعه نمائید. این نرم افزار تحت لیسانس
+                        <a target="_blank"
+                           href="https://github.com/masoudmanson/talk-electron/blob/master/LICENSE"> MIT </a> می باشد.
+                    </p>
+                    <p>در صورت مواجه با هر گونه خطایی لطفا با تیم چت در ارتباط باشید.</p>
+                    <img src={(this.state.nightMode) ? "assets/talk-logo2.png" : "assets/talk-logo.png"}
+                         alt="Talk Desktop"></img>
+                    <small className="version">{`Talk Desktop - Version ${version}`}</small>
+                </CustomModal>
             </div>
         )
     }

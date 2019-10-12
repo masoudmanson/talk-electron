@@ -2,18 +2,32 @@ const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, s
 const path = require("path");
 const isDev = require("electron-is-dev");
 const notifier = require('node-notifier');
-const fs = require('fs');
-const request = require('request');
+// const fs = require('fs');
+// const request = require('request');
 const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
+const Storage = require('electron-json-storage');
+// var myStorage = Storage.get('settings.json', {}, ()=>{
+//     logEverywhere('Storage gotten' + myStorage);
+// });
+
+const dataPath = Storage.getDataPath();
+console.log(dataPath);
+Storage.get('settings.json', function(error, data) {
+    if (error) throw error;
+
+    console.log(data);
+});
+
 
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
         windowBounds: {width: 1200, height: 700},
         codeVerifier: '',
-        refreshToken: ''
+        refreshToken: '',
+        nightMode: false
     }
 });
 
@@ -23,7 +37,6 @@ const Auth = new PKCE({
     redirectUri: "talk://login",
     timeRemainingTimeout: 300,
     onNewToken: token => {
-        logEverywhere('PKCE new token called');
         mainWindow.webContents.send('authToken', {token: token});
     }
 });
@@ -70,10 +83,8 @@ if (!gotTheLock) {
 
     app.on("ready", function () {
         protocol.registerHttpProtocol('talk', (request) => {
-            logEverywhere('protocol.registerHttpProtocol called');
             try {
                 let finalUrl = url.parse(request.url);
-                logEverywhere('finalURL' + JSON.stringify(finalUrl));
                 if (finalUrl.path.match(/\?code/)) {
                     Auth.setCode(finalUrl.query.substring(5));
                 }
@@ -150,6 +161,11 @@ if (!gotTheLock) {
         // Auth.signOut();
     });
 
+    ipcMain.on('nightMode', (event, nightMode) => {
+        logEverywhere('NightMode received ------ ' + nightMode)
+        store.set('nightMode', nightMode.toString());
+    });
+
     ipcMain.on('notify', (event, msg, name, img) => {
         download(img, name, function (icon) {
             if (icon) {
@@ -163,7 +179,8 @@ if (!gotTheLock) {
                         icon: icon,
                         wait: true
                     }, function () {
-                        mainWindow.show();
+                        // Do something after notification has been send
+                        // mainWindow.show();
                     }).on('click', function () {
                         mainWindow.show();
                     });
@@ -199,12 +216,16 @@ function createWindow() {
     }));
 
     mainWindow.on('ready-to-show', function () {
-        setTimeout(() => mainWindow.show(), 50);
+        setTimeout(() => {
+            mainWindow.show();
+            logEverywhere('Sending nightMode to web view ' + store.get('nightMode'));
+            mainWindow.webContents.send('nightMode', store.get('nightMode'));
+        }, 50);
     });
 
     mainWindow.webContents.openDevTools();
 
-    mainWindow.webContents.on('new-window', function(event, url){
+    mainWindow.webContents.on('new-window', function (event, url) {
         event.preventDefault();
         shell.openItem(url);
     });
@@ -231,7 +252,7 @@ function createWindow() {
 }
 
 var download = function (uri, filename, callback) {
-    callback(path.join(__dirname, 'talk.png'));
+    callback(path.join(__dirname, '/assets/logo.png'));
     return;
 
     // request.head(uri, function (err, res, body) {
