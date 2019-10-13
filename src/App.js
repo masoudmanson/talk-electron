@@ -31,7 +31,8 @@ export default class App extends Component {
             modalState: '',
             chatState: '',
             chatReady: false,
-            nightMode: false
+            nightMode: false,
+            catchError: false
         };
         this.onPodChatReady = this.onPodChatReady.bind(this);
         this.forceReconnect = this.forceReconnect.bind(this);
@@ -41,6 +42,8 @@ export default class App extends Component {
         this.openModal = this.openModal.bind(this);
         this.changeTheme = this.changeTheme.bind(this);
         this.onNewMessage = this.onNewMessage.bind(this);
+        this.openThread = this.openThread.bind(this);
+        this.onNotificationClick = this.onNotificationClick.bind(this);
     }
 
     componentDidMount() {
@@ -76,9 +79,18 @@ export default class App extends Component {
     }
 
     onNewMessage(msg, t, tid) {
-        if(msg.participant.id != this.chatUser.id) {
-            // ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
-        }
+        // if(msg.participant.id != this.chatUser.id) {
+        //     ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
+        // }
+    }
+
+    openThread(threadObject, userId) {
+
+    }
+
+    onNotificationClick() {
+        ipc.send('openTalk');
+
     }
 
     onPodChatReady(user, chatSDK) {
@@ -120,6 +132,11 @@ export default class App extends Component {
                     break;
             }
         };
+
+        chatSDK.onError = (e) => {
+            console.log('Some fuckin error happende at sdk side', e);
+            this.setState({catchError: true});
+        }
     }
 
     minimizeWindow() {
@@ -181,7 +198,7 @@ export default class App extends Component {
     }
 
     render() {
-        if (!this.state.token) {
+        if (!this.state.token || this.state.catchError) {
             return (
                 <div>
                     <div id="login-page">
@@ -218,6 +235,8 @@ export default class App extends Component {
                                 // disableNotification
                                 clearCache={this.clearCache}
                                 onNewMessage={this.onNewMessage}
+                                onNotificationClickHook = {this.onNotificationClick}
+                                openThread={this.openThread}
                                 onReady={this.onPodChatReady}
                                 customClassName={"talkDesktopWrapper"}
                                 {...this.serverConfig}

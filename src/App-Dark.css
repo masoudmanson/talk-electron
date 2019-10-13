@@ -1042,6 +1042,10 @@ body.dark-theme {
     background-color: #37474F !important;
 }
 
+.dark-theme ._1Lqlk._2z2Ea._22A7X._1qySD ._2SUne._3n9rL._3gvTA {
+    color: #fff !important;
+}
+
 .dark-theme ._1Lqlk._1JdIJ {
     border-color: #ffe8a5 !important;
 }
@@ -1108,7 +1112,7 @@ body.dark-theme {
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    background-image: linear-gradient(0deg, #455A64 10%, transparent 50%) !important;
+    background-image: linear-gradient(0deg, #546E7A 10%, transparent 50%) !important;
 }
 
 .dark-theme ._1Lqlk._32EfX._2z2Ea._3zAJM ._1Lqlk._32gxb._3uCWc,

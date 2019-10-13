@@ -7087,9 +7087,10 @@ podchat-browser@^4.10.16:
     podasync-ws-only "^2.7.5"
     query-string "^6.8.1"
 
-podchatweb@^0.48.7:
-  version "0.48.7"
-  resolved "https://registry.yarnpkg.com/podchatweb/-/podchatweb-0.48.7.tgz#381550949b1eeca447a112c47ac287979907d79a"
+podchatweb@^0.48.8:
+  version "0.48.8"
+  resolved "https://registry.yarnpkg.com/podchatweb/-/podchatweb-0.48.8.tgz#4f83abe0b09f9dba501ee9668ba22ec2fa0fb580"
+  integrity sha512-4luyR7ejZGZrCdGjxw8ZfXC8f74pfQT5Gm9JyFKaZFT4ngOJbUBMPJhTmWyzIj7fVFYQnasDg8FJNG9ekyuvWw==
   dependencies:
     "@babel/polyfill" "^7.2.5"
     classnames "^2.2.6"

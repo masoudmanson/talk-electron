@@ -177,7 +177,13 @@ class OauthPKCE {
                 if (error) {
                     reject(error);
                 } else {
-                    return resolve(JSON.parse(body));
+                    var result;
+                    try {
+                        result = JSON.parse(body);
+                        return resolve(result);
+                    } catch(e) {
+                        console.log(e);
+                    }
                 }
             });
         });
@@ -212,8 +218,7 @@ class OauthPKCE {
             });
 
             this.guiWindow.removeMenu();
-
-            this.guiWindow.webContents.openDevTools();
+            // this.guiWindow.webContents.openDevTools();
 
             this.guiWindow.loadURL(this.urlGenerator());
             this.guiWindow.on("closed", () => (this.guiWindow = null));

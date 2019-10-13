@@ -80,7 +80,7 @@ if (!gotTheLock) {
 
         createWindow();
 
-        const iconPath = path.join(__dirname, '/assets/talk-logo2.png');
+        const iconPath = path.join(__dirname, '/assets/tray.png');
         appIcon = new Tray(nativeImage.createFromPath(iconPath));
 
         appIcon.on('click', () => {
@@ -137,6 +137,10 @@ if (!gotTheLock) {
         app.quit();
     });
 
+    ipcMain.on('openTalk', () => {
+        mainWindow.show();
+    });
+
     ipcMain.on('signout-app', () => {
         // mainWindow.webContents.send('authToken', {token: null});
         // Auth.signOut();
@@ -151,25 +155,22 @@ if (!gotTheLock) {
             if (icon) {
                 let message = (msg && msg.length) ? msg.replace(/:emoji#common-telegram#.\d+..\d+:/gi, '⚪️') : msg;
 
-                // if (!mainWindow.isVisible()) {
-                    var mim = notifier.notify({
+                if (!mainWindow.isVisible()) {
+                    notifier.notify({
                         appName: 'talk.pod.land',
                         title: name,
                         message: message,
-                        icon: icon,
-                        wait: true
+                        icon: icon
                     }, function () {
                         // Do something after notification has been send
-                        // mainWindow.show();
                     });
 
-                    mim.on('click', function () {
-                        console.log('You clicked on a notification bitch :|');
+                    notifier.on('click', function () {
                         mainWindowFocus = true;
                         mainWindow.show();
                         mainWindow.focus();
                     });
-                // }
+                }
             }
         });
     });
@@ -193,8 +194,7 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
@@ -208,8 +208,6 @@ function createWindow() {
             mainWindow.webContents.send('nightMode', store.get('nightMode'));
         }, 50);
     });
-
-    mainWindow.webContents.openDevTools();
 
     mainWindow.webContents.on('new-window', function (event, url) {
         event.preventDefault();
