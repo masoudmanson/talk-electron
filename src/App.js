@@ -16,6 +16,7 @@ export default class App extends Component {
         super(props);
         this.clearCache = false;
         this.chatSDK = {};
+        this.chatUser = {};
         this.connectionInterval = null;
         this.connectionTimeout = null;
         this.serverConfig = {
@@ -39,6 +40,7 @@ export default class App extends Component {
         this.globalMenuCloser = this.globalMenuCloser.bind(this);
         this.openModal = this.openModal.bind(this);
         this.changeTheme = this.changeTheme.bind(this);
+        this.onNewMessage = this.onNewMessage.bind(this);
     }
 
     componentDidMount() {
@@ -74,12 +76,14 @@ export default class App extends Component {
     }
 
     onNewMessage(msg, t, tid) {
-        // Disable Node Notifications for now
-        // ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
+        if(msg.participant.id != this.chatUser.id) {
+            // ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
+        }
     }
 
     onPodChatReady(user, chatSDK) {
         this.chatSDK = chatSDK;
+        this.chatUser = user;
 
         this.setState({chatReady: true});
 
@@ -171,7 +175,6 @@ export default class App extends Component {
 
     changeTheme() {
         this.setState({nightMode: !this.state.nightMode}, () => {
-            console.log('Sending nightMode to main', this.state.nightMode);
             ipc.send('nightMode', this.state.nightMode);
             document.getElementsByTagName("BODY")[0].className = (this.state.nightMode) ? 'dark-theme' : 'light-theme';
         });
@@ -183,7 +186,7 @@ export default class App extends Component {
                 <div>
                     <div id="login-page">
                         <Loading type='ball_triangle' width={100} height={100}
-                                 fill={(this.state.nightMode ? '#fff2cc' : '#9f456e')}/>
+                                 fill={(this.state.nightMode ? '#ffe8a5' : '#7a325d')}/>
                         <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
                     </div>
                 </div>
@@ -212,7 +215,7 @@ export default class App extends Component {
 
                 <div id="content" onClick={this.globalMenuCloser}>
                     <PodchatJSX token={this.state.token}
-                                disableNotification
+                                // disableNotification
                                 clearCache={this.clearCache}
                                 onNewMessage={this.onNewMessage}
                                 onReady={this.onPodChatReady}
@@ -224,7 +227,7 @@ export default class App extends Component {
                         <div id="connection-state" onClick={this.forceReconnect}
                              className={this.state.chatState ? 'has-content' : 'no-content'}>
                             <Loading type='puff' width={20} height={20}
-                                     fill={(this.state.nightMode ? '#78909C' : '#9f456e')}/>
+                                     fill={(this.state.nightMode ? '#ffe8a5' : '#7a325d')}/>
                             {this.state.chatState}
                         </div>
                     }

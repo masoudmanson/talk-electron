@@ -173,14 +173,10 @@ class OauthPKCE {
                 form: baseObject
             };
 
-            console.log('Request Options', options);
-
             Request.post(options, (error, response, body) => {
                 if (error) {
-                    console.log('Request Face Error', error);
                     reject(error);
                 } else {
-                    console.log('Request response', body);
                     return resolve(JSON.parse(body));
                 }
             });

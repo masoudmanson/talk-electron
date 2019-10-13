@@ -12,7 +12,7 @@ body.dark-theme {
     padding: 0px !important;
     margin: 0px !important;
     position: absolute !important;
-    background-color: #1a252b !important;
+    background-color: #37474F !important;
     top: 0px !important;
     left: 0px !important;
     right: 0px !important;
@@ -63,7 +63,8 @@ body.dark-theme {
     margin: 0px !important;
     color: #B0BEC5 !important;
     font-family: sans-serif !important;
-    border-bottom: solid 1px #1a252b !important;
+    border-bottom: solid 1px #263238 !important;
+    user-select: none !important;
 }
 
 .dark-theme #title {
@@ -84,10 +85,10 @@ body.dark-theme {
 
 .dark-theme #menu-wrapper {
     min-width: 150px;
-    -webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.05) !important;
-    -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.05) !important;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1) !important;
-    background-color: #1a252b;
+    -webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5) !important;
+    -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5) !important;
+    background-color: #37474F;
     border-right: solid 1px #2a3940;
     border-bottom: solid 1px #2a3940;
     color: #ECEFF1;
@@ -437,7 +438,7 @@ body.dark-theme {
 }
 
 .dark-theme ._2dA2O:hover, ._15T4e:hover {
-    background-color: rgba(197, 79, 156, 0.1) !important;
+    background-color: rgba(122, 50, 93, 0.1) !important;
 }
 
 .dark-theme .hF0PV {
@@ -492,6 +493,17 @@ body.dark-theme {
 
 .dark-theme ._1Lqlk._2z2Ea._2LQIa > svg {
     color: #78909C !important;
+    width: 24px !important;
+    margin: 12px 10px 0 0 !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.dark-theme ._1Lqlk._2z2Ea._2LQIa:hover > svg {
+    color: #ECEFF1 !important;
     width: 24px !important;
     margin: 12px 10px 0 0 !important;
 }
@@ -650,7 +662,7 @@ body.dark-theme {
 }
 
 .dark-theme ._1Lqlk._k5in svg {
-    color: #fff !important;
+    color: #546E7A !important;
 }
 
 .dark-theme ._2SUne.aEoDW._1OxKw._3n9rL._237vm {
@@ -658,16 +670,37 @@ body.dark-theme {
 }
 
 .dark-theme ._1Lqlk._3QtvS.YxAJm {
-    background-color: #9f456e !important;
+    background-color: #ffe8a5 !important;
+}
+
+.dark-theme ._1Lqlk._3QtvS.YxAJm ._1Lqlk._k5in {
+    color: #37474F;
 }
 
 .dark-theme ._1Lqlk.LIX33.aIgCu svg {
     color: #B0BEC5 !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.dark-theme ._1Lqlk.LIX33.aIgCu:hover svg {
+    color: #ECEFF1 !important;
 }
 
 .dark-theme button._Hnov._1YxfV._1wRSW {
-    /*display: none !important;*/
-    background-color: #B0BEC5 !important;
+    background-color: #546E7A !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.dark-theme button._Hnov._1YxfV._1wRSW:hover {
+    background-color: #78909C !important;
 }
 
 .dark-theme ._1Lqlk.LIX33._2z2Ea._3QXGV {
@@ -719,6 +752,16 @@ body.dark-theme {
 .dark-theme ._1Lqlk._1NSo_ span._2G9u3._2VZQ6 svg {
     color: #B0BEC5 !important;
     cursor: pointer !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.dark-theme ._1Lqlk._1NSo_ span._2G9u3._2VZQ6:hover svg {
+    color: #ECEFF1 !important;
+    cursor: pointer !important;
 }
 
 .dark-theme ._1Lqlk._1JdIJ {
@@ -751,6 +794,10 @@ body.dark-theme {
     color: #ECEFF1;
 }
 
+.dark-theme ._1Lqlk.zm2RJ._14xFN p {
+    color: #ECEFF1 !important;
+}
+
 .dark-theme ._1Lqlk.zm2RJ._14xFN ul._1D92N li._1MUFa._1In1- {
     padding: 5px 10px !important;
 }
@@ -779,7 +826,7 @@ body.dark-theme {
 }
 
 .dark-theme ._2SUne._13D4d._237vm {
-    color: #9f456e !important;
+    color: #ffe8a5 !important;
 }
 
 .dark-theme ._1Lqlk.mGLNB._nTZB.rm3Af {
@@ -909,9 +956,9 @@ body.dark-theme {
 
 .dark-theme ._1Lqlk.LIX33._2z2Ea._1DKjA {
     background-color: #263238 !important;
-    margin: 0 0 0 -5px !important;
     justify-content: center !important;
     border-top-color: #37474F !important;
+    overflow-x: hidden;
 }
 
 .dark-theme ._1Lqlk._3tM2U {
@@ -979,7 +1026,7 @@ body.dark-theme {
 }
 
 .dark-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD {
-    border-left: solid 6px rgba(197, 79, 156, 0.5) !important;
+    border-left: solid 6px rgba(122, 50, 93, 0.5) !important;
     border-right: none !important;
 }
 
@@ -1089,6 +1136,15 @@ body.dark-theme {
 
 .dark-theme ._1Lqlk._1N92Q.Oysv1 ._1Lqlk div svg {
     color: #B0BEC5 !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.dark-theme ._1Lqlk._1N92Q.Oysv1 ._1Lqlk div:hover svg {
+    color: #ECEFF1 !important;
 }
 
 .dark-theme ._1Lqlk._7cuOV {

@@ -63,6 +63,7 @@ body.light-theme {
     color: #555 !important;
     font-family: sans-serif !important;
     border-bottom: solid 1px #ddd !important;
+    user-select: none !important;
 }
 
 .light-theme #title {
@@ -179,7 +180,7 @@ body.light-theme {
     background-color: transparent;
     font-family: 'IRANSans', tahoma;
     display: block;
-    color: #9f456e;
+    color: #7a325d;
     padding: 4px 16px;
     margin-top: 30px;
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
@@ -290,7 +291,7 @@ body.light-theme {
     -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     color: #fff;
-    background-color: #9f456e;
+    background-color: #7a325d;
 }
 
 .light-theme #connection-state svg {
@@ -390,7 +391,7 @@ body.light-theme {
 }
 
 .light-theme .modal-content a:hover {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme .modal-content .version {
@@ -424,7 +425,7 @@ input {
 }
 
 .light-theme ._2dA2O:hover, ._15T4e:hover {
-    background-color: rgba(197, 79, 156, 0.1) !important;
+    background-color: rgba(122, 50, 93, 0.1) !important;
 }
 
 .light-theme .hF0PV {
@@ -468,6 +469,15 @@ input {
     color: #888 !important;
     width: 24px !important;
     margin: 12px 10px 0 0 !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.light-theme ._1Lqlk._2z2Ea._2LQIa:hover > svg {
+    color: #7a325d !important;
 }
 
 .light-theme ._3TYfX {
@@ -479,7 +489,7 @@ input {
 }
 
 .light-theme ._1Lqlk._1NSo_ ._1Lqlk.LIX33 svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._362p1 {
@@ -567,7 +577,7 @@ input {
 }
 
 .light-theme ._1Lqlk._3LDkG svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._1k2KS {
@@ -598,6 +608,15 @@ input {
     margin-top: -4px !important;
     color: #888 !important;
     width: 20px !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.light-theme ._1Lqlk._2z2Ea._1YpKq div._1Lqlk._3LDkG svg {
+    color: #7a325d !important;
 }
 
 .light-theme ._2SUne.KyzhS._24QOl {
@@ -609,7 +628,7 @@ input {
 }
 
 .light-theme ._2SUne._13D4d._1OxKw._237vm {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._k5in svg {
@@ -617,32 +636,42 @@ input {
 }
 
 .light-theme ._2SUne.aEoDW._1OxKw._3n9rL._237vm {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._3QtvS.YxAJm {
-    background-color: #9f456e !important;
+    background-color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.LIX33.aIgCu svg {
     color: #888 !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+
+.light-theme ._1Lqlk.LIX33.aIgCu:hover svg {
+    color: #7a325d !important;
 }
 
 .light-theme button._Hnov._1YxfV._1wRSW {
     /*display: none !important;*/
-    background-color: #9f456e !important;
+    background-color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.LIX33._2z2Ea._3QXGV svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.LIX33._2z2Ea._109LH svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._2SUne._3n9rL._237vm {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.LIX33._2z2Ea._3QXGV:hover {
@@ -677,7 +706,7 @@ input {
 }
 
 .light-theme ._1Lqlk._1JdIJ {
-    border: solid 1px #9f456e !important;
+    border: solid 1px #7a325d !important;
 }
 
 .light-theme ._1Lqlk._2yBeC {
@@ -711,7 +740,7 @@ input {
 }
 
 .light-theme button._2kW37._2dA2O {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme button._2kW37._2dA2O:hover {
@@ -719,7 +748,7 @@ input {
 }
 
 .light-theme ._2SUne._13D4d._237vm {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.mGLNB._nTZB.rm3Af {
@@ -733,11 +762,11 @@ input {
 }
 
 .light-theme ._1Lqlk._32EfX._3zAJM svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme button._2kW37._15T4e {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._32EfX._3zAJM {
@@ -745,15 +774,15 @@ input {
 }
 
 .light-theme ._1Lqlk.rGCGH {
-    background-color: #9f456e !important;
+    background-color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.rGCGH:after {
-    background-color: #9f456e !important;
+    background-color: #7a325d !important;
 }
 
 .light-theme ._2SUne._2gzLL._13D4d._1i1XX {
-    color: #9f456e !important;
+    color: #7a325d !important;
     border-bottom: solid 1px #ddd !important;
 }
 
@@ -768,7 +797,7 @@ input {
 }
 
 .light-theme a._2gzLL:hover {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._3kBtH.DVZpE {
@@ -791,7 +820,7 @@ input {
 }
 
 .light-theme ._1Lqlk._1_sEv ._2SUne._13D4d._3n9rL {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ul._1D92N li._1MUFa._3IhAb {
@@ -799,7 +828,7 @@ input {
 }
 
 .light-theme ul._1D92N li._1MUFa._3IhAb._2ybKw {
-    background-color: #9f456e !important;
+    background-color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._2wyMJ._38miL ._1Lqlk._3aZOf {
@@ -819,17 +848,18 @@ input {
 }
 
 .light-theme .__1MUFa._3IhAb._1In1- {
-    border-right: solid 1px #9f456e !important;
+    border-right: solid 1px #7a325d !important;
 }
 
 .light-theme ._2AqlL:hover {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk.LIX33._2z2Ea._1DKjA {
     background-color: #f0f2f7 !important;
-    margin: 0 0 0 -5px !important;
+    /*margin: 0 0 0 -5px !important;*/
     justify-content: center !important;
+    overflow-x: hidden;
 }
 
 .light-theme ._1Lqlk._3tM2U {
@@ -895,12 +925,12 @@ input {
 }
 
 .light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD {
-    border-left: solid 6px rgba(197, 79, 156, 0.5) !important;
+    border-left: solid 6px rgba(122, 50, 93, 0.5) !important;
     border-right: none !important;
 }
 
 .light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD {
-    border-right: solid 6px rgba(197, 79, 156, 0.5) !important;
+    border-right: solid 6px rgba(122, 50, 93, 0.5) !important;
 }
 
 .light-theme ._1Lqlk._2z2Ea._22A7X._1qySD {
@@ -917,7 +947,7 @@ input {
 
 .light-theme ._1Lqlk._1fGbl._33y82 ._1Lqlk._1NSo_ svg,
 .light-theme ._1Lqlk._1fGbl ._1Lqlk._1NSo_ svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
     margin: 7px !important;
 }
 
@@ -937,11 +967,11 @@ input {
 .light-theme ._1Lqlk._1fGbl._33y82 ._1Lqlk._1mWHx svg:hover,
 .light-theme ._1Lqlk._1fGbl ._1Lqlk._1mWHx svg:hover {
     transform: scale(1) !important;
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._22A7X._1XCcV ._1Lqlk.LIX33._2smpi ._1Lqlk svg {
-    color: #9f456e !important;
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._2z2Ea._22A7X._1qySD ._1Lqlk._2jEAk ._1Lqlk._22A7X.RfvgL {
@@ -964,7 +994,16 @@ input {
 }
 
 .light-theme ._1Lqlk._1N92Q.Oysv1 ._1Lqlk div svg {
-    color: #9f456e !important;
+    color: #888 !important;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.light-theme ._1Lqlk._1N92Q.Oysv1 ._1Lqlk div:hover svg {
+    color: #7a325d !important;
 }
 
 .light-theme ._1Lqlk._7cuOV {
@@ -986,7 +1025,7 @@ input {
 }
 
 .light-theme ._1Lqlk.YXJz5 ._1Lqlk._18RRi {
-    -webkit-box-shadow: 0px 3px 0px #9f456e !important;
-    -moz-box-shadow: 0px 3px 0px #9f456e !important;
-    box-shadow: 0px 3px 0px #9f456e !important;
+    -webkit-box-shadow: 0px 3px 0px #7a325d !important;
+    -moz-box-shadow: 0px 3px 0px #7a325d !important;
+    box-shadow: 0px 3px 0px #7a325d !important;
 }

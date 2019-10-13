@@ -2,24 +2,9 @@ const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, s
 const path = require("path");
 const isDev = require("electron-is-dev");
 const notifier = require('node-notifier');
-// const fs = require('fs');
-// const request = require('request');
 const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
-const Storage = require('electron-json-storage');
-// var myStorage = Storage.get('settings.json', {}, ()=>{
-//     logEverywhere('Storage gotten' + myStorage);
-// });
-
-const dataPath = Storage.getDataPath();
-console.log(dataPath);
-Storage.get('settings.json', function(error, data) {
-    if (error) throw error;
-
-    console.log(data);
-});
-
 
 const store = new Store({
     configName: 'user-preferences',
@@ -143,14 +128,10 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('noToken', () => {
-        logEverywhere('no token req has come');
-        console.log(Auth);
         Auth.auth();
     });
 
     ipcMain.on('quit-app', () => {
-        Auth.reset();
-
         mainWindow = null;
         app.isQuiting = true;
         app.quit();
@@ -162,7 +143,6 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('nightMode', (event, nightMode) => {
-        logEverywhere('NightMode received ------ ' + nightMode)
         store.set('nightMode', nightMode.toString());
     });
 
@@ -171,9 +151,9 @@ if (!gotTheLock) {
             if (icon) {
                 let message = (msg && msg.length) ? msg.replace(/:emoji#common-telegram#.\d+..\d+:/gi, '⚪️') : msg;
 
-                if (!mainWindow.isVisible()) {
-                    notifier.notify({
-                        appName: 'Talk-Desktop',
+                // if (!mainWindow.isVisible()) {
+                    var mim = notifier.notify({
+                        appName: 'talk.pod.land',
                         title: name,
                         message: message,
                         icon: icon,
@@ -181,10 +161,15 @@ if (!gotTheLock) {
                     }, function () {
                         // Do something after notification has been send
                         // mainWindow.show();
-                    }).on('click', function () {
-                        mainWindow.show();
                     });
-                }
+
+                    mim.on('click', function () {
+                        console.log('You clicked on a notification bitch :|');
+                        mainWindowFocus = true;
+                        mainWindow.show();
+                        mainWindow.focus();
+                    });
+                // }
             }
         });
     });
@@ -209,6 +194,8 @@ function createWindow() {
 
     mainWindow.removeMenu();
 
+    mainWindow.webContents.openDevTools();
+
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
         protocol: 'file:',
@@ -218,7 +205,6 @@ function createWindow() {
     mainWindow.on('ready-to-show', function () {
         setTimeout(() => {
             mainWindow.show();
-            logEverywhere('Sending nightMode to web view ' + store.get('nightMode'));
             mainWindow.webContents.send('nightMode', store.get('nightMode'));
         }, 50);
     });
@@ -252,7 +238,7 @@ function createWindow() {
 }
 
 var download = function (uri, filename, callback) {
-    callback(path.join(__dirname, '/assets/logo.png'));
+    callback(path.join(__dirname, '/assets/apple-touch.png'));
     return;
 
     // request.head(uri, function (err, res, body) {

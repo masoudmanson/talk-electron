@@ -25,9 +25,9 @@ class Store {
 
 function parseDataFile(filePath, defaults) {
     try {
-        return JSON.parse(fs.readFileSync(filePath));
+        var result = JSON.parse(fs.readFileSync(filePath));
+        return result;
     } catch(error) {
-        console.log('Fuckin error at stre.js', error);
         return defaults;
     }
 }
