@@ -1,6 +1,6 @@
 {
   "name": "Talk-Desktop",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "private": true,
   "description": "Talk Messaging Platform Desktop Application",
   "author": "Masoud Amjadi <masoudmanson@gmail.com>",
@@ -60,7 +60,7 @@
     "electron-modal": "^1.0.0",
     "node-notifier": "^6.0.0",
     "podauth": "^1.2.6",
-    "podchatweb": "^0.48.7",
+    "podchatweb": "^0.48.8",
     "protocol": "^0.1.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
