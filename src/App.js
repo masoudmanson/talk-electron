@@ -134,7 +134,7 @@ export default class App extends Component {
         };
 
         chatSDK.onError = (e) => {
-            console.log('Some fuckin error happende at sdk side', e);
+            console.log('ChatSDK onError () => { } ', e);
             this.setState({catchError: true});
         }
     }

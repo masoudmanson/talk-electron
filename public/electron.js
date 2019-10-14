@@ -17,7 +17,7 @@ const store = new Store({
 });
 
 const Auth = new PKCE({
-    clientId: "88413l69cd4051a039cf115ee4e073",//"9896nb14440519d026c9d8b1bf290",
+    clientId: "88413l69cd4051a039cf115ee4e073",
     scope: "social:write",
     redirectUri: "talk://login",
     timeRemainingTimeout: 300,
@@ -194,7 +194,7 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
