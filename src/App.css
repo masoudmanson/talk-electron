@@ -949,7 +949,8 @@ input {
 }
 
 .light-theme ._1Lqlk._1fGbl._33y82 {
-    background-color: #f0f2f7 !important;
+    background-color: rgba(255,255, 255, 0.4) !important;
+    backdrop-filter: blur(5px);
 }
 
 .light-theme ._1Lqlk._1fGbl._33y82 ._1Lqlk._1NSo_ svg,
@@ -1044,4 +1045,21 @@ input {
     -webkit-box-shadow: 0px 3px 0px #7a325d !important;
     -moz-box-shadow: 0px 3px 0px #7a325d !important;
     box-shadow: 0px 3px 0px #7a325d !important;
+}
+
+.light-theme ._1Lqlk._1k2KS ._1Lqlk.LIX33._3zqLP.PSubV._3FRVG {
+    padding: 5px 5px 5px 0 !important;
+}
+
+.light-theme .d94Ih:hover,
+.light-theme .PEVIh:hover {
+    color: #7a325d !important;
+}
+
+.light-theme ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD ._1Lqlk._2z2Ea._1oKxl ._1Lqlk._1n4vz span._2G9u3 {
+    padding: 0 4px !important;
+}
+
+.light-theme ._1Lqlk.cg_Am span._19Gfw {
+    background-color: #7a325d;
 }
