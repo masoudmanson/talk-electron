@@ -54,7 +54,11 @@ export default class App extends Component {
         }
 
         ipc.on('authToken', function (event, data) {
+            console.log('New Token received', data);
             self.setState({token: data.token});
+            // setTimeout(()=>{
+            //     self.setState({token: null});
+            // }, 5000);
         });
 
         ipc.on('nightMode', function (event, data) {
@@ -90,7 +94,6 @@ export default class App extends Component {
 
     onNotificationClick() {
         ipc.send('openTalk');
-
     }
 
     onPodChatReady(user, chatSDK) {
@@ -98,6 +101,7 @@ export default class App extends Component {
         this.chatUser = user;
 
         this.setState({chatReady: true});
+
 
         chatSDK.onChatState = (state) => {
             switch (state.socketState) {
@@ -203,7 +207,7 @@ export default class App extends Component {
                 <div>
                     <div id="login-page">
                         <Loading type='ball_triangle' width={100} height={100}
-                                 fill={(this.state.nightMode ? '#ffe8a5' : '#7a325d')}/>
+                                 fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
                         <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
                     </div>
                 </div>
@@ -246,7 +250,7 @@ export default class App extends Component {
                         <div id="connection-state" onClick={this.forceReconnect}
                              className={this.state.chatState ? 'has-content' : 'no-content'}>
                             <Loading type='puff' width={20} height={20}
-                                     fill={(this.state.nightMode ? '#ffe8a5' : '#7a325d')}/>
+                                     fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
                             {this.state.chatState}
                         </div>
                     }
