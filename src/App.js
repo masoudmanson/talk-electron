@@ -32,7 +32,8 @@ export default class App extends Component {
             chatState: '',
             chatReady: false,
             nightMode: false,
-            catchError: false
+            catchError: false,
+            catchErrorMessage: ''
         };
         this.onPodChatReady = this.onPodChatReady.bind(this);
         this.forceReconnect = this.forceReconnect.bind(this);
@@ -42,7 +43,8 @@ export default class App extends Component {
         this.openModal = this.openModal.bind(this);
         this.changeTheme = this.changeTheme.bind(this);
         this.onNewMessage = this.onNewMessage.bind(this);
-        this.openThread = this.openThread.bind(this);
+        this.onPodChatRetry = this.onPodChatRetry.bind(this);
+        this.onPodChatSignOut = this.onPodChatSignOut.bind(this);
         this.onNotificationClick = this.onNotificationClick.bind(this);
     }
 
@@ -55,20 +57,35 @@ export default class App extends Component {
 
         ipc.on('authToken', function (event, data) {
             console.log('New Token received', data);
-            self.setState({token: data.token});
-            // setTimeout(()=>{
-            //     self.setState({token: null});
-            // }, 5000);
+
+            self.setState({
+                token: data.token,
+                catchError: false
+            });
+
+            setTimeout(() => {
+                console.log('[✕] Token has been Revoked!');
+                self.setState({token: 'wefwefwfewe'});
+            }, 5000);
         });
 
         ipc.on('nightMode', function (event, data) {
-            self.setState({nightMode: data === 'true'}, ()=>{
+            self.setState({nightMode: data === 'true'}, () => {
                 document.getElementsByTagName("BODY")[0].className = (self.state.nightMode) ? 'dark-theme' : 'light-theme';
             });
         });
 
         document.getElementsByTagName("BODY")[0].classList = (this.state.nightMode) ? 'dark-theme' : 'light-theme';
         document.getElementsByTagName("BODY")[0].style.opacity = 1;
+    }
+
+    componentDidCatch(error, info) {
+        // Display fallback UI
+        this.setState({ catchError: true });
+        console.log('error', error);
+        console.log('info', info);
+        // You can also log the error to an error reporting service
+        // logErrorToMyService(error, info);
     }
 
     doLogin() {
@@ -88,10 +105,6 @@ export default class App extends Component {
         // }
     }
 
-    openThread(threadObject, userId) {
-
-    }
-
     onNotificationClick() {
         ipc.send('openTalk');
     }
@@ -99,9 +112,9 @@ export default class App extends Component {
     onPodChatReady(user, chatSDK) {
         this.chatSDK = chatSDK;
         this.chatUser = user;
+        this.chatAgent = chatSDK.chatAgent;
 
         this.setState({chatReady: true});
-
 
         chatSDK.onChatState = (state) => {
             switch (state.socketState) {
@@ -137,10 +150,21 @@ export default class App extends Component {
             }
         };
 
-        chatSDK.onError = (e) => {
-            console.log('ChatSDK onError () => { } ', e);
-            this.setState({catchError: true});
-        }
+        this.chatAgent.on('error', (e) => {
+            this.setState({catchError: true, catchErrorMessage: (e && e.message && e.message.length) ? e.message : ''});
+
+            // if (e && e.code && e.code == 21) {
+            //     ipc.send('noToken');
+            // }
+        });
+    }
+
+    onPodChatRetry() {
+        return false;
+    }
+
+    onPodChatSignOut() {
+        return false;
     }
 
     minimizeWindow() {
@@ -198,11 +222,12 @@ export default class App extends Component {
         this.setState({nightMode: !this.state.nightMode}, () => {
             ipc.send('nightMode', this.state.nightMode);
             document.getElementsByTagName("BODY")[0].className = (this.state.nightMode) ? 'dark-theme' : 'light-theme';
+            this.globalMenuCloser();
         });
     }
 
     render() {
-        if (!this.state.token || this.state.catchError) {
+        if (!this.state.token) {
             return (
                 <div>
                     <div id="login-page">
@@ -213,15 +238,27 @@ export default class App extends Component {
                 </div>
             );
         }
+
         return (
             <div>
+                {
+                    this.state.catchError &&
+                    <div id="error-page">
+                        <Loading type='puff' width={50} height={50}
+                                 fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
+                        { this.state.catchErrorMessage && <p dir="auto" className={'error-message'}>{this.state.catchErrorMessage}</p> }
+                        <button id="login-btn" onClick={this.doLogin}>گزارش خطا !</button>
+                    </div>
+                }
                 <div id="title-bar">
                     <div id="title-bar-menu">
                         <button id="menu-bar-btn" onClick={(e) => this.openTitlebarMenu(e)}>☰</button>
                         <div id="menu-wrapper">
                             <ul>
                                 <li id="menu-about" onClick={() => this.openModal('about')}>About Talk Desktop</li>
-                                <li id="menu-theme" onClick={this.changeTheme}>Theme <span>{(this.state.nightMode) ? '☾' : '☼'}</span></li>
+                                <li id="menu-theme"
+                                    onClick={this.changeTheme}>Theme <span>{(this.state.nightMode) ? '☾' : '☼'}</span>
+                                </li>
                                 <li id="menu-quit" onClick={this.globalQuitWindow}>Quit Talk</li>
                             </ul>
                         </div>
@@ -236,15 +273,17 @@ export default class App extends Component {
 
                 <div id="content" onClick={this.globalMenuCloser}>
                     <PodchatJSX token={this.state.token}
-                                // disableNotification
-                                clearCache={this.clearCache}
-                                onNewMessage={this.onNewMessage}
-                                onNotificationClickHook = {this.onNotificationClick}
-                                openThread={this.openThread}
-                                onReady={this.onPodChatReady}
-                                customClassName={"talkDesktopWrapper"}
-                                {...this.serverConfig}
-                                originalServer/>
+                        // disableNotification
+                        clearCache={this.clearCache}
+                        onNewMessage={this.onNewMessage}
+                        onNotificationClickHook={this.onNotificationClick}
+                        openThread={this.openThread}
+                        onReady={this.onPodChatReady}
+                        onRetryHook={this.onPodChatRetry}
+                        onSignOutHook={this.onPodChatSignOut}
+                        customClassName={"talkDesktopWrapper"}
+                        {...this.serverConfig}
+                        originalServer/>
                     {
                         !this.state.chatReady &&
                         <div id="connection-state" onClick={this.forceReconnect}

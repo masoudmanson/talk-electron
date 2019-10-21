@@ -153,6 +153,8 @@ class OauthPKCE {
     }
 
     makeRequest(isRefresh) {
+        console.log('PKCE request caled');
+        debugger;
         return new Promise((resolve, reject) => {
             var baseObject = {
                 grant_type: isRefresh ? "refresh_token" : "authorization_code",

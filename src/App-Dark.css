@@ -178,6 +178,41 @@ body.dark-theme {
     flex-direction: column;
 }
 
+.dark-theme #error-page {
+    direction: rtl;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    margin: auto !important;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgba(0, 10, 15, 0.6) !important;
+    background: rgba(0, 10, 15, 0.6) !important;
+    backdrop-filter: blur(7px) !important;
+    z-index: 200000000;
+}
+
+.dark-theme p.error-message {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace !important;
+    color: #b86257;
+    font-size: 80%;
+    margin: 25px auto -10px !important;
+    padding: 10px 20px;
+    background-color: #161d21;
+    border-radius: 4px;
+    max-width: 70vw;
+    max-height: 40vh;
+    overflow-y: scroll;
+    text-align: -webkit-auto;
+}
+
 .dark-theme #login-btn {
     background-color: transparent;
     font-family: 'IRANSans', tahoma;
@@ -328,8 +363,8 @@ body.dark-theme {
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 10, 15, 0.8) !important;
-    background: rgba(0, 10, 15, 0.8) !important;
+    background-color: rgba(0, 10, 15, 0.6) !important;
+    background: rgba(0, 10, 15, 0.6) !important;
     backdrop-filter: blur(7px) !important;
     z-index: 201;
     top: 0;
@@ -458,7 +493,7 @@ body.dark-theme {
 }
 
 .dark-theme ._1Lqlk._3hI4C {
-    opacity: 0.4 !important;
+    opacity: 0.6 !important;
     background: url("assets/52499c035cc6625a8505316e96181a74-dark.jpg") !important;
     background-size: 600px !important;
 }
@@ -994,15 +1029,15 @@ body.dark-theme {
 .dark-theme .fancybox-show-infobar .fancybox-bg,
 .dark-theme .fancybox-show-nav .fancybox-bg,
 .dark-theme .fancybox-bg {
-    background-color: rgba(0, 10, 15, 0.8) !important;
-    background: rgba(0, 10, 15, 0.8) !important;
+    background-color: rgba(0, 10, 15, 0.6) !important;
+    background: rgba(0, 10, 15, 0.6) !important;
     backdrop-filter: blur(7px) !important;
     z-index: 10000 !important;
 }
 
 .dark-theme ._1Lqlk._3kBtH._2deOn ._1Lqlk.gwW4L {
-    background-color: rgba(0, 10, 15, 0.8) !important;
-    background: rgba(0, 10, 15, 0.8) !important;
+    background-color: rgba(0, 10, 15, 0.6) !important;
+    background: rgba(0, 10, 15, 0.6) !important;
     backdrop-filter: blur(7px) !important;
     -webkit-animation: fadein .5s;
     -o-animation: fadein .5s;
