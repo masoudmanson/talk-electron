@@ -6,14 +6,14 @@ const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
 const { autoUpdater } = require('electron-updater');
-
-autoUpdater.setFeedURL({
-    provider: 'github',
-    repo: 'talk-electron',
-    owner: 'masoudmanson',
-    private: false,
-    token: '0c70bffadcd1dc371eb782bb908845603b3bcf6e'
-})
+//
+// autoUpdater.setFeedURL({
+//     provider: 'github',
+//     repo: 'talk-electron',
+//     owner: 'masoudmanson',
+//     token: '',
+//     private: false
+// });
 
 const store = new Store({
     configName: 'user-preferences',
@@ -114,6 +114,7 @@ if (!gotTheLock) {
         appIcon.setToolTip('Talk Desktop');
         appIcon.setContextMenu(contextMenu);
 
+        console.log('Checking for new Updates through auto updater *****');
         autoUpdater.checkForUpdatesAndNotify();
     });
 
@@ -197,10 +198,12 @@ if (!gotTheLock) {
     });
 
     autoUpdater.on('update-available', () => {
+        console.log('update-available with auto updater ', new Date());
         mainWindow.webContents.send('update-available');
     });
 
     autoUpdater.on('update-downloaded', () => {
+        console.log('update-downloaded with auto updater ', new Date());
         mainWindow.webContents.send('update-downloaded');
     });
 

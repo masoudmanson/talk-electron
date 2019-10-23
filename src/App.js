@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {PodchatJSX} from "podchatweb";
 import Loading from 'react-loading-components';
-// import {version} from '../package.json';
 import CustomModal from './CustomModal';
 
 import './App-Dark.css';
