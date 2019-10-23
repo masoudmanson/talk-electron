@@ -227,7 +227,7 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
