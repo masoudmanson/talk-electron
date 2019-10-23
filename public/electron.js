@@ -5,6 +5,7 @@ const notifier = require('node-notifier');
 const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
+const { autoUpdater } = require('electron-updater');
 
 const store = new Store({
     configName: 'user-preferences',
@@ -104,6 +105,8 @@ if (!gotTheLock) {
 
         appIcon.setToolTip('Talk Desktop');
         appIcon.setContextMenu(contextMenu);
+
+        autoUpdater.checkForUpdatesAndNotify();
     });
 
     app.on("window-all-closed", () => {
@@ -128,7 +131,13 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('noToken', () => {
+        console.log('noToken IPC Message');
         Auth.auth();
+    });
+
+    ipcMain.on('noToken2', () => {
+        console.log('noToken2 IPC Message Called At', new Date());
+        // Auth.auth();
     });
 
     ipcMain.on('quit-app', () => {
@@ -173,6 +182,22 @@ if (!gotTheLock) {
                 }
             }
         });
+    });
+
+    ipcMain.on('app-version', (event) => {
+        mainWindow.webContents.send('app-version', { version: app.getVersion() });
+    });
+
+    autoUpdater.on('update-available', () => {
+        mainWindow.webContents.send('update-available');
+    });
+
+    autoUpdater.on('update-downloaded', () => {
+        mainWindow.webContents.send('update-downloaded');
+    });
+
+    ipcMain.on('restart-app', () => {
+        autoUpdater.quitAndInstall();
     });
 }
 

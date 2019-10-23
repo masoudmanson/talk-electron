@@ -417,8 +417,8 @@ body.dark-theme {
 }
 
 .dark-theme .modal-content img {
-    margin: auto;
-    max-width: 120px;
+    margin: 15px auto;
+    max-width: 100px;
 }
 
 .dark-theme .modal-content a {

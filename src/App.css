@@ -21,6 +21,21 @@ body.light-theme {
     overflow: hidden !important;
 }
 
+#notification {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 200px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.hidden {
+    display: none;
+}
+
 @keyframes fadein {
     from {
         opacity: 0;
@@ -416,8 +431,8 @@ body.light-theme {
 }
 
 .light-theme .modal-content img {
-    margin: auto;
-    max-width: 120px;
+    margin: 15px auto;
+    max-width: 100px;
 }
 
 .light-theme .modal-content a {
