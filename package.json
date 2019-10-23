@@ -1,12 +1,12 @@
 {
   "name": "Talk-Desktop",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "private": true,
   "description": "Talk Messaging Platform Desktop Application",
   "author": "Masoud Amjadi <masoudmanson@gmail.com>",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/masoudmanson/talk-electron.git"
+    "type": "git",
+    "url": "https://github.com/masoudmanson/talk-electron.git"
   },
   "build": {
     "productName": "Talk Desktop",
@@ -83,7 +83,7 @@
     "build": "yarn react-build && electron-builder",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
     "local-build": "yarn react-build && electron-builder build --win --publish never",
-    "deploy": "yarn react-build && electron-builder build --win --publish always"
+    "deploy": "yarn react-build && electron-builder build --win"
   },
   "eslintConfig": {
     "extends": "react-app"
