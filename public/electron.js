@@ -7,6 +7,14 @@ const Store = require('./store.js');
 const PKCE = require('./pkce.js');
 const { autoUpdater } = require('electron-updater');
 
+autoUpdater.setFeedURL({
+    provider: 'github',
+    repo: 'talk-electron',
+    owner: 'masoudmanson',
+    private: false,
+    token: '0c70bffadcd1dc371eb782bb908845603b3bcf6e'
+})
+
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
