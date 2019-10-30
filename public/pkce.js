@@ -34,6 +34,7 @@ class OauthPKCE {
         this.scope = options.scope || "profile";
         this.redirectTrigger = null;
         this.code = null;
+        this.onTokenExpireTimeout = null;
     }
 
     urlGenerator() {
@@ -67,19 +68,19 @@ class OauthPKCE {
                 } else {
                     setTimeout(function() {
                         _this.generateToken(forceLoginPage);
-                    }, 500);
+                    }, 1000);
                 }
             }, error => {
                 if (this.onError(error)) {
                     if (this.refreshTokenStr && this.codeVerifierStr) {
                         setTimeout(function() {
                             _this.generateToken();
-                        }, 500);
+                        }, 1000);
                     } else {
                         setTimeout(function() {
                             _this.reset();
                             _this.generateToken(true);
-                        }, 500);
+                        }, 1000);
                     }
                 }
             });
@@ -97,15 +98,14 @@ class OauthPKCE {
             }, error => {
                 if (this.onError(error)) {
                     if (this.refreshTokenStr && this.codeVerifierStr) {
-
                         setTimeout(function() {
                             _this.refreshToken();
-                        }, 500);
+                        }, 1000);
                     } else {
                         setTimeout(function() {
                             _this.reset();
                             _this.generateToken(true);
-                        }, 500);
+                        }, 1000);
                     }
                 }
             });
@@ -115,12 +115,9 @@ class OauthPKCE {
     onTokenExpire(timeout) {
         var _this = this;
         const {onError, onNewToken} = this;
-        setTimeout(e => {
+        _this.onTokenExpireTimeout && clearTimeout(_this.onTokenExpireTimeout);
+        _this.onTokenExpireTimeout = setTimeout(e => {
             _this.refreshToken().then(onNewToken, error => {
-                // if (onError(error)) {
-                //     this.reset();
-                //     this.generateToken(true);
-                // }
                 _this.onTokenExpire(5000);
             });
         }, timeout);
@@ -153,8 +150,6 @@ class OauthPKCE {
     }
 
     makeRequest(isRefresh) {
-        console.log('PKCE request caled');
-        debugger;
         return new Promise((resolve, reject) => {
             var baseObject = {
                 grant_type: isRefresh ? "refresh_token" : "authorization_code",
@@ -196,7 +191,9 @@ class OauthPKCE {
         if (force) {
             return this.makeRequest(isRefresh);
         }
-        setTimeout(e => _this.makeRequest(isRefresh), _this.retryTimeout);
+        setTimeout(e => {
+            _this.makeRequest(isRefresh);
+        }, _this.retryTimeout);
         if (this.onRetry) {
             this.onRetry(this.retry.bind(null, isRefresh, true));
         }

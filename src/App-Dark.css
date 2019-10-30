@@ -19,22 +19,7 @@ body.dark-theme {
     bottom: 0px !important;
     opacity: 0;
     overflow: hidden !important;
-}
-
-#notification {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 200px;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    z-index: 20000000;
-}
-
-.hidden {
-    display: none;
+    font-family: 'IRANSans', tahoma;
 }
 
 @keyframes fadein {
@@ -94,6 +79,7 @@ body.dark-theme {
 }
 
 .dark-theme #title-bar-menu {
+    font-family: IRANSans !important;
     -webkit-app-region: no-drag !important;
     display: inline;
     outline: none !important;
@@ -110,7 +96,7 @@ body.dark-theme {
     color: #eaedef;
     z-index: 1000000;
     position: fixed !important;
-    margin-top: 1px !important;
+    margin-top: -3px !important;
     display: none;
 }
 
@@ -146,7 +132,7 @@ body.dark-theme {
 .dark-theme #menu-theme span {
     position: absolute;
     right: 12px;
-    top: 5px;
+    top: 7px;
     font-size: 19px;
     display: block;
     color: #ffd89d;
@@ -303,7 +289,7 @@ body.dark-theme {
     background-color: #fff !important;
 }
 
-.dark-theme #connection-state {
+.dark-theme .status-messages {
     direction: rtl !important;
     font-family: 'IRANSans';
     position: absolute;
@@ -323,24 +309,27 @@ body.dark-theme {
     -moz-box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
     box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
     z-index: 100;
-    cursor: pointer;
     font-weight: 300;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     -ms-transition: all 0.2s;
     -o-transition: all 0.2s;
     transition: all 0.2s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.dark-theme #connection-state.no-content {
+.dark-theme .status-messages.no-content {
     padding: 10px;
 }
 
-.dark-theme #connection-state.has-content {
+.dark-theme .status-messages.has-content {
     padding: 10px 35px 10px 15px;
 }
 
-.dark-theme #connection-state:hover {
+.dark-theme .status-messages:hover {
     -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -348,16 +337,27 @@ body.dark-theme {
     background-color: #9f456e;
 }
 
-.dark-theme #connection-state svg {
+.dark-theme .status-messages svg {
     stroke-width: 3px !important;
     position: absolute;
     top: 10px;
     right: 9px;
 }
 
-.dark-theme #connection-state:hover svg {
+.dark-theme .status-messages:hover svg {
     color: #eaedef !important;
     stroke: #eaedef !important;
+}
+
+.dark-theme .status-messages span {
+    border: solid 1px rgba(255, 242, 204, 0.4);
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    padding: 3px 8px;
+    margin-left: -7px;
+    margin-right: 8px;
+    cursor: pointer;
 }
 
 .dark-theme .modal-wrapper {
@@ -501,6 +501,10 @@ body.dark-theme {
 
 .dark-theme ._2dA2O:hover, ._15T4e:hover {
     background-color: rgba(122, 50, 93, 0.1) !important;
+}
+
+.dark-theme ._1vE09 {
+    max-width: 100% !important;
 }
 
 .dark-theme .hF0PV {
@@ -704,7 +708,8 @@ body.dark-theme {
 .dark-theme ._1MUFa._3IhAb ._1Lqlk._2z2Ea._1-hHP ._1Lqlk._1Qa4U,
 .dark-theme ._1MUFa._3IhAb._2ybKw ._1Lqlk._2z2Ea._1-hHP ._1Lqlk._1Qa4U,
 .dark-theme ._1Lqlk._2z2Ea._3pDW8 ._1Lqlk._2z2Ea._1-hHP ._1Lqlk._1Qa4U,
-.dark-theme ._1Lqlk.zm2RJ._14xFN ._1Lqlk._2z2Ea._1-hHP.f_m1X ._1Lqlk._1Qa4U {
+.dark-theme ._1Lqlk.zm2RJ._14xFN ._1Lqlk._2z2Ea._1-hHP.f_m1X ._1Lqlk._1Qa4U,
+.dark-theme ._1Lqlk.zm2RJ.PtN_V ._1MUFa._1V5dP ._1Lqlk.LIX33.PSubV ._1Lqlk._1Qa4U {
     background-color: #90677e !important;
 }
 
@@ -729,6 +734,7 @@ body.dark-theme {
 
 .dark-theme ._2SUne._13D4d._1OxKw._237vm {
     color: #ffd89d !important;
+    padding-left: 5px !important;
 }
 
 .dark-theme ._1Lqlk._k5in svg {
@@ -1094,6 +1100,16 @@ body.dark-theme {
 
 .dark-theme ._1MUFa._2GXEe._1V5dP._2ybKw {
     background-color: transparent !important;
+}
+
+.dark-theme ._1MUFa._1V5dP ._1Lqlk._2z2Ea._3_-NP ._1Lqlk.LIX33._2z2Ea {
+    text-align: -webkit-auto !important;
+}
+
+@media screen and (max-width: 992px) {
+    .dark-theme ._1MUFa._1V5dP ._1Lqlk._2z2Ea._3_-NP ._1Lqlk.LIX33._2z2Ea {
+        max-width: 80% !important;
+    }
 }
 
 .dark-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD {

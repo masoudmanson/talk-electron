@@ -6,19 +6,12 @@ const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
 const { autoUpdater } = require('electron-updater');
-//
-// autoUpdater.setFeedURL({
-//     provider: 'github',
-//     repo: 'talk-electron',
-//     owner: 'masoudmanson',
-//     token: '',
-//     private: false
-// });
+const contextMenu = require('electron-context-menu');
 
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
-        windowBounds: {width: 1200, height: 700},
+        windowBounds: {width: 1100, height: 620},
         codeVerifier: '',
         refreshToken: '',
         nightMode: false
@@ -33,6 +26,11 @@ const Auth = new PKCE({
     onNewToken: token => {
         mainWindow.webContents.send('authToken', {token: token});
     }
+});
+
+contextMenu({
+    showLookUpSelection: false,
+    showCopyImage: false
 });
 
 var appIcon = null;
@@ -114,7 +112,6 @@ if (!gotTheLock) {
         appIcon.setToolTip('Talk Desktop');
         appIcon.setContextMenu(contextMenu);
 
-        console.log('Checking for new Updates through auto updater *****');
         autoUpdater.checkForUpdatesAndNotify();
     });
 
@@ -140,13 +137,7 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('noToken', () => {
-        console.log('noToken IPC Message');
         Auth.auth();
-    });
-
-    ipcMain.on('noToken2', () => {
-        console.log('noToken2 IPC Message Called At', new Date());
-        // Auth.auth();
     });
 
     ipcMain.on('quit-app', () => {
@@ -198,12 +189,10 @@ if (!gotTheLock) {
     });
 
     autoUpdater.on('update-available', () => {
-        console.log('update-available with auto updater ', new Date());
         mainWindow.webContents.send('update-available');
     });
 
     autoUpdater.on('update-downloaded', () => {
-        console.log('update-downloaded with auto updater ', new Date());
         mainWindow.webContents.send('update-downloaded');
     });
 
@@ -230,7 +219,7 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),

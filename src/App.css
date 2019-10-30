@@ -1,6 +1,6 @@
 .light-theme .talkDesktopWrapper {
     height: calc(100vh - 24px) !important;
-    background-color: #e5e8ec !important;
+    background-color: #f3eff1 !important;
 }
 
 html {
@@ -19,22 +19,7 @@ body.light-theme {
     bottom: 0px !important;
     opacity: 0;
     overflow: hidden !important;
-}
-
-#notification {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 200px;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    z-index: 20000000;
-}
-
-.hidden {
-    display: none;
+    font-family: 'IRANSans', tahoma;
 }
 
 @keyframes fadein {
@@ -93,6 +78,7 @@ body.light-theme {
 }
 
 .light-theme #title-bar-menu {
+    font-family: IRANSans !important;
     -webkit-app-region: no-drag !important;
     display: inline;
     outline: none !important;
@@ -108,7 +94,7 @@ body.light-theme {
     border-bottom: solid 1px #ddd;
     z-index: 1000000;
     position: fixed !important;
-    margin-top: 1px !important;
+    margin-top: -3px !important;
     display: none;
 }
 
@@ -300,7 +286,7 @@ body.light-theme {
     background-color: #fff !important;
 }
 
-.light-theme #connection-state {
+.light-theme .status-messages {
     direction: rtl !important;
     font-family: 'IRANSans';
     position: absolute;
@@ -320,24 +306,24 @@ body.light-theme {
     -moz-box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
     box-shadow: 0 0pt 3px rgba(0, 0, 0, 0.5);
     z-index: 100;
-    cursor: pointer;
     font-weight: 300;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     -ms-transition: all 0.2s;
     -o-transition: all 0.2s;
     transition: all 0.2s;
+    user-select: none;
 }
 
-.light-theme #connection-state.no-content {
+.light-theme .status-messages.no-content {
     padding: 10px;
 }
 
-.light-theme #connection-state.has-content {
+.light-theme .status-messages.has-content {
     padding: 10px 35px 10px 15px;
 }
 
-.light-theme #connection-state:hover {
+.light-theme .status-messages:hover {
     -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -345,16 +331,31 @@ body.light-theme {
     background-color: #7a325d;
 }
 
-.light-theme #connection-state svg {
+.light-theme .status-messages svg {
     stroke-width: 3px !important;
     position: absolute;
     top: 10px;
     right: 9px;
 }
 
-.light-theme #connection-state:hover svg {
+.light-theme .status-messages:hover svg {
     color: #fff !important;
     stroke: #fff !important;
+}
+
+.light-theme .status-messages span {
+    border: solid 1px rgba(122, 50, 93, 0.3);
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    padding: 3px 8px;
+    margin-left: -7px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.light-theme .status-messages:hover span {
+    border-color: rgba(255, 242, 204, 0.4);
 }
 
 .light-theme .modal-wrapper {
@@ -479,6 +480,20 @@ input {
     background-color: rgba(122, 50, 93, 0.1) !important;
 }
 
+.light-theme ._1MUFa._1V5dP ._1Lqlk._2z2Ea._3_-NP ._1Lqlk.LIX33._2z2Ea {
+    text-align: -webkit-auto !important;
+}
+
+@media screen and (max-width: 992px) {
+    .light-theme ._1MUFa._1V5dP ._1Lqlk._2z2Ea._3_-NP ._1Lqlk.LIX33._2z2Ea {
+        max-width: 80% !important;
+    }
+}
+
+.light-theme ._1vE09 {
+    max-width: 100% !important;
+}
+
 .light-theme .hF0PV {
     color: #dea4ff !important;
     font-weight: 300 !important;
@@ -510,7 +525,9 @@ input {
 .light-theme ._1MUFa._3IhAb ._1Lqlk._2z2Ea._1-hHP ._1Lqlk._1Qa4U,
 .light-theme ._1MUFa._3IhAb._2ybKw ._1Lqlk._2z2Ea._1-hHP ._1Lqlk._1Qa4U,
 .light-theme ._1Lqlk._2z2Ea._3pDW8 ._1Lqlk._2z2Ea._1-hHP ._1Lqlk._1Qa4U,
-.light-theme ._1Lqlk.zm2RJ._14xFN ._1Lqlk._2z2Ea._1-hHP.f_m1X ._1Lqlk._1Qa4U {
+.light-theme ._1Lqlk.zm2RJ._14xFN ._1Lqlk._2z2Ea._1-hHP.f_m1X ._1Lqlk._1Qa4U,
+.light-theme ._1Lqlk.zm2RJ.PtN_V ._1MUFa._1V5dP ._1Lqlk.LIX33.PSubV ._1Lqlk._1Qa4U
+{
     background-color: #90677e !important;
 }
 
@@ -685,6 +702,7 @@ input {
 
 .light-theme ._2SUne._13D4d._1OxKw._237vm {
     color: #7a325d !important;
+    padding-left: 5px !important;
 }
 
 .light-theme ._1Lqlk._k5in svg {

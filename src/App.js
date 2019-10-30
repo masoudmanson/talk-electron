@@ -47,6 +47,7 @@ export default class App extends Component {
         super(props);
         this.clearCache = false;
         this.chatSDK = {};
+        this.chatAgent = {};
         this.chatUser = {};
         this.connectionInterval = null;
         this.connectionTimeout = null;
@@ -55,18 +56,24 @@ export default class App extends Component {
             platformHost: "https://api.pod.land/srv/core",
             fileServer: "https://core.pod.land"
         };
+
         this.state = {
             token: null,
             maximized: false,
             menuState: false,
             modalState: '',
+            chatConnecting: false,
             chatState: '',
             chatReady: false,
             nightMode: false,
             catchError: false,
             catchErrorMessage: '',
-            version: ''
+            version: '',
+            updateNotification: false,
+            updateNotificationCompleted: false,
+            updateNotificationMessage: ''
         };
+
         this.onPodChatReady = this.onPodChatReady.bind(this);
         this.forceReconnect = this.forceReconnect.bind(this);
         this.maximizeWindow = this.maximizeWindow.bind(this);
@@ -78,6 +85,8 @@ export default class App extends Component {
         this.onPodChatRetry = this.onPodChatRetry.bind(this);
         this.onPodChatSignOut = this.onPodChatSignOut.bind(this);
         this.onNotificationClick = this.onNotificationClick.bind(this);
+        this.closeNotification = this.closeNotification.bind(this);
+        this.refreshTokenAndSocket = this.refreshTokenAndSocket.bind(this);
     }
 
     componentDidMount() {
@@ -96,18 +105,10 @@ export default class App extends Component {
         });
 
         ipc.on('authToken', function (event, data) {
-            console.log('New Token received', data);
-
             self.setState({
                 token: data.token,
                 catchError: false
             });
-
-            // setTimeout(() => {
-            //     // console.log('[✕] Token has been Revoked!');
-            //     // throw new Error('Error error error');
-            //     // self.setState({token: new Date().getTime()});
-            // }, 5000);
         });
 
         ipc.on('nightMode', function (event, data) {
@@ -119,26 +120,34 @@ export default class App extends Component {
         document.getElementsByTagName("BODY")[0].classList = (this.state.nightMode) ? 'dark-theme' : 'light-theme';
         document.getElementsByTagName("BODY")[0].style.opacity = 1;
 
-        const notification = document.getElementById('notification');
-        const message = document.getElementById('message');
-        const restartButton = document.getElementById('restart-button');
-
         ipc.on('update-available', () => {
             ipc.removeAllListeners('update-available');
-            message.innerText = 'A new update is available. Downloading now...';
-            notification.classList.remove('hidden');
+            this.setState({
+                updateNotification: true,
+                updateNotificationMessage: 'دریافت نسخه‌ی جدید ...'
+            });
         });
 
         ipc.on('update-downloaded', () => {
             ipc.removeAllListeners('update-downloaded');
-            message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-            restartButton.classList.remove('hidden');
-            notification.classList.remove('hidden');
+
+            this.setState({
+                updateNotification: true,
+                updateNotificationCompleted: true,
+                updateNotificationMessage: 'نسخه‌ی جدید آماده‌ی نصب می باشد.'
+            });
         });
     }
 
     closeNotification() {
-        // notification.classList.add('hidden');
+        this.setState({
+            updateNotification: false
+        });
+    }
+
+    refreshTokenAndSocket() {
+        this.doLogin();
+        this.forceReconnect();
     }
 
     restartApp() {
@@ -152,7 +161,10 @@ export default class App extends Component {
     forceReconnect() {
         if (!this.state.chatReady) {
             this.chatSDK.reconnect();
-            this.setState({chatState: 'در حال اتصال ...'});
+            this.setState({
+                chatState: 'در حال اتصال ...',
+                chatConnecting: true
+            });
         }
     }
 
@@ -177,6 +189,7 @@ export default class App extends Component {
             switch (state.socketState) {
                 case 1:
                     this.setState({chatState: '', chatReady: true});
+
                     break;
 
                 case 3:
@@ -189,6 +202,7 @@ export default class App extends Component {
                         if (remaintingTime > 0) {
                             this.setState({
                                 chatReady: false,
+                                chatConnecting: false,
                                 chatState: 'اتصال بعد از ' + --remaintingTime + ' ثانیه ...'
                             });
                         }
@@ -196,21 +210,32 @@ export default class App extends Component {
 
                     if (state.timeUntilReconnect > 0) {
                         this.connectionTimeout = setTimeout(() => {
-                            this.setState({chatReady: false, chatState: 'در حال اتصال ...'});
+                            this.setState({
+                                chatReady: false,
+                                chatConnecting: true,
+                                chatState: 'در حال اتصال ...'
+                            });
                         }, state.timeUntilReconnect);
                     }
                     break;
 
                 default:
-                    this.setState({chatReady: false, chatState: ''});
+                    this.setState({
+                        chatReady: false,
+                        chatState: '',
+                        chatConnecting: false
+                    });
                     break;
             }
         };
 
         this.chatAgent.on('error', (e) => {
-            this.setState({catchError: true, catchErrorMessage: (e && e.message && e.message.length) ? e.message : ''});
+            // this.setState({
+            //     catchError: true,
+            //     catchErrorMessage: (e && e.message && e.message.length) ? e.message : ''
+            // });
 
-            if (e && e.code && e.code == 21) {
+            if (e && e.code && e.code === 21) {
                 ipc.send('noToken');
             }
         });
@@ -299,16 +324,6 @@ export default class App extends Component {
         return (
             <ErrorBoundary>
                 <div>
-                    <div id="notification" className="hidden">
-                        <p id="message"></p>
-                        <button id="close-button" onClick={this.closeNotification}>
-                            Close
-                        </button>
-                        <button id="restart-button" onClick={this.restartApp} className="hidden">
-                            Restart
-                        </button>
-                    </div>
-
                     {
                         this.state.catchError &&
                         <div id="error-page">
@@ -316,19 +331,20 @@ export default class App extends Component {
                                      fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
                             {this.state.catchErrorMessage &&
                             <p dir="auto" className={'error-message'}>{this.state.catchErrorMessage}</p>}
-                            <button id="login-btn" onClick={this.doLogin}>تلاش دوباره</button>
+                            <button id="login-btn" onClick={this.refreshTokenAndSocket}>تلاش دوباره</button>
                         </div>
                     }
+
                     <div id="title-bar">
                         <div id="title-bar-menu">
                             <button id="menu-bar-btn" onClick={(e) => this.openTitlebarMenu(e)}>☰</button>
                             <div id="menu-wrapper">
                                 <ul>
-                                    <li id="menu-about" onClick={() => this.openModal('about')}>About Talk Desktop</li>
+                                    <li id="menu-about" onClick={() => this.openModal('about')}>درباره تاک</li>
                                     <li id="menu-theme"
-                                        onClick={this.changeTheme}>Theme <span>{(this.state.nightMode) ? '☾' : '☼'}</span>
+                                        onClick={this.changeTheme}>ظاهر برنامه <span>{(this.state.nightMode) ? '☾' : '☼'}</span>
                                     </li>
-                                    <li id="menu-quit" onClick={this.globalQuitWindow}>Quit Talk</li>
+                                    <li id="menu-quit" onClick={this.globalQuitWindow}>خروج</li>
                                 </ul>
                             </div>
                         </div>
@@ -354,13 +370,36 @@ export default class App extends Component {
                             customClassName={"talkDesktopWrapper"}
                             {...this.serverConfig}
                             originalServer/>
+
                         {
                             !this.state.chatReady &&
-                            <div id="connection-state" onClick={this.forceReconnect}
-                                 className={this.state.chatState ? 'has-content' : 'no-content'}>
+                            <div id="connection-state"
+                                 className={(this.state.chatState ? 'has-content status-messages' : 'no-content status-messages')}
+                                 style={{
+                                     bottom: this.state.updateNotification ? 60 : 10
+                                 }}>
                                 <Loading type='puff' width={20} height={20}
                                          fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
                                 {this.state.chatState}
+                                {
+                                    (!this.state.chatConnecting && this.state.chatState) &&
+                                    <span onClick={this.forceReconnect}>تلاش مجدد</span>
+                                }
+                            </div>
+                        }
+
+                        {
+                            this.state.updateNotification &&
+                            <div id="notification" className="has-content status-messages">
+                                <Loading type='puff' width={20} height={20}
+                                         fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
+                                {this.state.updateNotificationMessage}
+                                {
+                                    this.state.updateNotificationCompleted ?
+                                        <span onClick={this.restartApp}>شروع مجدد</span>
+                                        :
+                                        <span onClick={this.closeNotification}>بستن</span>
+                                }
                             </div>
                         }
                     </div>
@@ -369,8 +408,10 @@ export default class App extends Component {
                         <h4>درباره تاک دسکتاپ</h4>
                         <p>جهت استفاده از نسخه ی وب به آدرس
                             <a target="_blank"
+                               rel="noopener noreferrer"
                                href="https://talk.pod.land"> Talk.pod.land </a> مراجعه نمائید. این نرم افزار تحت لیسانس
                             <a target="_blank"
+                               rel="noopener noreferrer"
                                href="https://github.com/masoudmanson/talk-electron/blob/master/LICENSE"> MIT </a> می
                             باشد.
                         </p>
