@@ -81,7 +81,7 @@ if (!gotTheLock) {
                     Auth.setCode(finalUrl.query.substring(5));
                 }
             } catch (e) {
-                logEverywhere(e);
+                console.log(e);
             }
         });
 
@@ -277,10 +277,3 @@ var download = function (uri, filename, callback) {
     //     }
     // });
 };
-
-function logEverywhere(s) {
-    console.log(s);
-    if (mainWindow && mainWindow.webContents) {
-        mainWindow.webContents.executeJavaScript(`console.log(${JSON.stringify(s)})`);
-    }
-}
