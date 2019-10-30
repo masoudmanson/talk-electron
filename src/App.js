@@ -342,7 +342,7 @@ export default class App extends Component {
                                 <ul>
                                     <li id="menu-about" onClick={() => this.openModal('about')}>درباره تاک</li>
                                     <li id="menu-theme"
-                                        onClick={this.changeTheme}>ظاهر برنامه <span>{(this.state.nightMode) ? '☾' : '☼'}</span>
+                                        onClick={this.changeTheme}>قالب برنامه <span>{(this.state.nightMode) ? '☾' : '☼'}</span>
                                     </li>
                                     <li id="menu-quit" onClick={this.globalQuitWindow}>خروج</li>
                                 </ul>
