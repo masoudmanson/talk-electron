@@ -68,6 +68,7 @@ export default class App extends Component {
             nightMode: false,
             catchError: false,
             catchErrorMessage: '',
+            catchErrorBtn: true,
             version: '',
             updateNotification: false,
             updateNotificationCompleted: false,
@@ -151,6 +152,11 @@ export default class App extends Component {
     }
 
     restartApp() {
+        this.setState({
+            catchError: true,
+            catchErrorMessage: 'نسخه‌ی جدید در حال بررسی می باشد. لطفا شکیبا باشید.',
+            catchErrorBtn: false
+        });
         ipc.send('restart-app');
     }
 
@@ -331,7 +337,10 @@ export default class App extends Component {
                                      fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
                             {this.state.catchErrorMessage &&
                             <p dir="auto" className={'error-message'}>{this.state.catchErrorMessage}</p>}
-                            <button id="login-btn" onClick={this.refreshTokenAndSocket}>تلاش دوباره</button>
+                            {
+                                this.state.catchErrorBtn &&
+                                <button id="login-btn" onClick={this.refreshTokenAndSocket}>تلاش دوباره</button>
+                            }
                         </div>
                     }
 
