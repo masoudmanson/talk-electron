@@ -88,6 +88,7 @@ export default class App extends Component {
         this.onNotificationClick = this.onNotificationClick.bind(this);
         this.closeNotification = this.closeNotification.bind(this);
         this.refreshTokenAndSocket = this.refreshTokenAndSocket.bind(this);
+        this.restartApp = this.restartApp.bind(this);
     }
 
     componentDidMount() {
