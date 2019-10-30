@@ -5,7 +5,7 @@ const notifier = require('node-notifier');
 const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
-const { autoUpdater } = require('electron-updater');
+const {autoUpdater} = require('electron-updater');
 const contextMenu = require('electron-context-menu');
 
 const store = new Store({
@@ -185,7 +185,7 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('app-version', (event) => {
-        mainWindow.webContents.send('app-version', { version: app.getVersion() });
+        mainWindow.webContents.send('app-version', {version: app.getVersion()});
     });
 
     autoUpdater.on('update-available', () => {
@@ -197,7 +197,20 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('restart-app', () => {
-        autoUpdater.quitAndInstall();
+        setTimeout(() => {
+            app.removeAllListeners("window-all-closed");
+
+            var browserWindows = BrowserWindow.getAllWindows();
+            browserWindows.forEach(function(browserWindow) {
+                browserWindow.removeAllListeners('close');
+            });
+
+            if (mainWindow != null) {
+                mainWindow.close();
+            }
+
+            autoUpdater.quitAndInstall(false);
+        }, 5000);
     });
 }
 
