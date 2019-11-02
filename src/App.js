@@ -426,8 +426,8 @@ export default class App extends Component {
                             باشد.
                         </p>
                         <p>در صورت مواجه با هر گونه خطایی لطفا با تیم چت در ارتباط باشید.</p>
-                        <img src={(this.state.nightMode) ? "assets/talk-logo2.png" : "assets/talk-logo.png"}
-                             alt="Talk Desktop"></img>
+                        {/*<img src={(this.state.nightMode) ? "assets/talk-logo2.png" : "assets/talk-logo.png"}*/}
+                             {/*alt="Talk Desktop"></img>*/}
                         <small className="version">{`Talk Desktop - Version ${this.state.version}`}</small>
                     </CustomModal>
                 </div>
