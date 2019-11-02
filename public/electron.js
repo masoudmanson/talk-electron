@@ -37,6 +37,7 @@ var appIcon = null;
 let mainWindow;
 let mainWindowFocus = false;
 let deeplinkingUrl;
+let checkForUpdateInterval;
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -112,7 +113,18 @@ if (!gotTheLock) {
         appIcon.setToolTip('Talk Desktop');
         appIcon.setContextMenu(contextMenu);
 
+        /*
+         * Check for updates for the first time
+         */
         autoUpdater.checkForUpdatesAndNotify();
+
+        /*
+         * Check for updates periodically every 15 minutes
+         */
+        checkForUpdateInterval && clearInterval(checkForUpdateInterval);
+        checkForUpdateInterval = setInterval(() => {
+            autoUpdater.checkForUpdatesAndNotify();
+        }, 15 * 60 * 1000);
     });
 
     app.on("window-all-closed", () => {
@@ -201,7 +213,7 @@ if (!gotTheLock) {
             app.removeAllListeners("window-all-closed");
 
             var browserWindows = BrowserWindow.getAllWindows();
-            browserWindows.forEach(function(browserWindow) {
+            browserWindows.forEach(function (browserWindow) {
                 browserWindow.removeAllListeners('close');
             });
 
