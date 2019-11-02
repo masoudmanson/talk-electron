@@ -186,7 +186,7 @@ body.light-theme {
 }
 
 .light-theme p.error-message {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace !important;
+    /*font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace !important;*/
     color: #b86257;
     font-size: 80%;
     margin: 25px auto -10px !important;
