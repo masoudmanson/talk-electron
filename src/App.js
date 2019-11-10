@@ -107,6 +107,7 @@ export default class App extends Component {
         });
 
         ipc.on('authToken', function (event, data) {
+            console.log('New Token', data.token);
             self.setState({
                 token: data.token,
                 catchError: false
@@ -176,9 +177,9 @@ export default class App extends Component {
     }
 
     onNewMessage(msg, t, tid) {
-        // if(msg.participant.id != this.chatUser.id) {
-        //     ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
-        // }
+        if(msg.participant.id != this.chatUser.id) {
+            ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
+        }
     }
 
     onNotificationClick() {

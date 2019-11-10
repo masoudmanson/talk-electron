@@ -8,6 +8,15 @@ const PKCE = require('./pkce.js');
 const {autoUpdater} = require('electron-updater');
 const contextMenu = require('electron-context-menu');
 
+var opsys = process.platform;
+if (opsys == "darwin") {
+    opsys = "mac";
+} else if (opsys == "win32" || opsys == "win64") {
+    opsys = "win";
+} else if (opsys == "linux") {
+    opsys = "lnx";
+}
+
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
@@ -244,7 +253,7 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
