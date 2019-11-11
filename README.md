@@ -4,6 +4,6 @@
 <p align="center"> 
    <img src="https://raw.githubusercontent.com/masoudmanson/fileupload/master/talk/Talk%20Teaser.gif" alt="Talk Desktop Teaser">
    <br/>
-   <a  align="center" href="https://github.com/masoudmanson/talk-electron/releases"><h3>💬 Download Talk Desktop 💬</h3></a>
+   <h3 align="center"><a href="https://github.com/masoudmanson/talk-electron/releases">💬 Download Talk Desktop 💬</a></h3>
 </p>
 
