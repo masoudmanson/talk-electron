@@ -107,7 +107,6 @@ export default class App extends Component {
         });
 
         ipc.on('authToken', function (event, data) {
-            console.log('New Token', data.token);
             self.setState({
                 token: data.token,
                 catchError: false
