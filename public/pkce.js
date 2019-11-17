@@ -16,8 +16,8 @@ class OauthPKCE {
         });
 
         this.guiWindow = null;
-        this.onError = (typeof options.onError == 'function') ? options.onNewToken : e => {
-            return true
+        this.onError = (typeof options.onError == 'function') ? options.onError : e => {
+            return true;
         };
         this.onNewToken = (typeof options.onNewToken == 'function') ? options.onNewToken : e => {
         };
@@ -25,7 +25,8 @@ class OauthPKCE {
         };
         this.codeVerifierStr = this.store.get("codeVerifier");
         this.codeChallengeStr = null;
-        this.retryTimeout = options.retryTimeout || 3000;
+        this.retryTimeout = options.retryTimeout || 5000;
+        this.retryCount = options.retryCount || 5;
         this.refreshTokenStr = this.store.get("refreshToken");
         this.clientId = options.clientId || null;
         this.redirectUri = options.redirectUri || 'talk://login';
@@ -35,6 +36,8 @@ class OauthPKCE {
         this.redirectTrigger = null;
         this.code = null;
         this.onTokenExpireTimeout = null;
+        this.globalTimeoutInterval = null;
+        this.globalRetryCount = 0;
     }
 
     urlGenerator() {
@@ -60,28 +63,32 @@ class OauthPKCE {
             }
 
             this.makeRequest().then(response => {
-                if (response.access_token) {
-                    this.refreshTokenStr = response.refresh_token;
-                    this.store.set("refreshToken", response.refresh_token);
-                    this.onTokenExpire((response.expires_in - this.timeRemainingTimeout) * 1000);
-                    resolve(response.access_token);
+                if (response.statusCode === 200) {
+                    try {
+                        let result = JSON.parse(response.body);
+
+                        if (result.access_token) {
+                            this.refreshTokenStr = result.refresh_token;
+                            this.store.set("refreshToken", result.refresh_token);
+                            this.onTokenExpire((result.expires_in - this.timeRemainingTimeout) * 1000);
+                            resolve(result.access_token);
+                        }
+                    } catch(e) {
+                        console.log(e);
+                    }
                 } else {
-                    setTimeout(function() {
-                        _this.generateToken(forceLoginPage);
-                    }, 1000);
+                    this.getCode();
+                    return;
                 }
             }, error => {
-                if (this.onError(error)) {
-                    if (this.refreshTokenStr && this.codeVerifierStr) {
-                        setTimeout(function() {
-                            _this.generateToken();
-                        }, 1000);
-                    } else {
-                        setTimeout(function() {
-                            _this.reset();
-                            _this.generateToken(true);
-                        }, 1000);
-                    }
+                if(++this.globalRetryCount < this.retryCount) {
+                    this.globalTimeoutInterval && clearTimeout(this.globalTimeoutInterval);
+                    this.globalTimeoutInterval == setTimeout(function () {
+                        _this.generateToken();
+                    }, this.retryTimeout);
+                } else {
+                    this.globalRetryCount = 0;
+                    this.onError(error);
                 }
             });
         });
@@ -91,22 +98,32 @@ class OauthPKCE {
         var _this = this;
         return new Promise((resolve, reject) => {
             this.makeRequest(true).then(response => {
-                this.refreshTokenStr = response.refresh_token;
-                this.store.set("refreshToken", response.refresh_token);
-                this.onTokenExpire((response.expires_in - this.timeRemainingTimeout) * 1000);
-                resolve(response.access_token);
-            }, error => {
-                if (this.onError(error)) {
-                    if (this.refreshTokenStr && this.codeVerifierStr) {
-                        setTimeout(function() {
-                            _this.refreshToken();
-                        }, 1000);
-                    } else {
-                        setTimeout(function() {
-                            _this.reset();
-                            _this.generateToken(true);
-                        }, 1000);
+                if (response.statusCode === 200) {
+                    try {
+                        let result = JSON.parse(response.body);
+
+                        if (result.refresh_token) {
+                            this.refreshTokenStr = result.refresh_token;
+                            this.store.set("refreshToken", result.refresh_token);
+                            this.onTokenExpire((result.expires_in - this.timeRemainingTimeout) * 1000);
+                            resolve(result.access_token);
+                        }
+                    } catch(e) {
+                        console.log(e);
                     }
+                } else {
+                    this.getCode();
+                    return;
+                }
+            }, error => {
+                if(++this.globalRetryCount < this.retryCount) {
+                    this.globalTimeoutInterval && clearTimeout(this.globalTimeoutInterval);
+                    this.globalTimeoutInterval == setTimeout(function () {
+                        _this.refreshToken();
+                    }, this.retryTimeout);
+                } else {
+                    this.globalRetryCount = 0;
+                    this.onError(error);
                 }
             });
         });
@@ -160,6 +177,7 @@ class OauthPKCE {
             if (isRefresh) {
                 const {refreshTokenStr} = this;
                 baseObject = {...baseObject, ...{refresh_token: refreshTokenStr}};
+                // baseObject = {...baseObject, ...{refresh_token: 'fwrr23rf234'}};
             } else {
                 const {redirectUri, code, refreshTokenStr} = this;
                 baseObject = {...baseObject, ...{refresh_token: refreshTokenStr, redirect_uri: redirectUri, code}};
@@ -172,15 +190,9 @@ class OauthPKCE {
 
             Request.post(options, (error, response, body) => {
                 if (error) {
-                    reject(error);
+                    return reject(error);
                 } else {
-                    var result;
-                    try {
-                        result = JSON.parse(body);
-                        return resolve(result);
-                    } catch(e) {
-                        console.log(e);
-                    }
+                    return resolve(response);
                 }
             });
         });
@@ -200,11 +212,11 @@ class OauthPKCE {
     }
 
     getCode() {
-        if (!this.guiWindow) {
-            this.reset();
-            this.codeVerifier();
-            this.codeChallenge();
+        this.reset();
+        this.codeVerifier();
+        this.codeChallenge();
 
+        if (!this.guiWindow) {
             this.guiWindow = new BrowserWindow({
                 width: 400,
                 height: 620,
@@ -222,7 +234,7 @@ class OauthPKCE {
             this.guiWindow.loadURL(this.urlGenerator());
             this.guiWindow.on("closed", () => (this.guiWindow = null));
         } else {
-            this.guiWindow.reload();
+            this.guiWindow.loadURL(this.urlGenerator());
         }
 
         this.guiWindow.restore();
@@ -230,6 +242,8 @@ class OauthPKCE {
     }
 
     auth() {
+        this.globalRetryCount = 0;
+
         if (!this.code) {
             this.getCode();
             return;

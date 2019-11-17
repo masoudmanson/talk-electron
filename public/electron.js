@@ -31,9 +31,12 @@ const Auth = new PKCE({
     clientId: "88413l69cd4051a039cf115ee4e073",
     scope: "social:write",
     redirectUri: "talk://login",
-    timeRemainingTimeout: 300,
+    timeRemainingTimeout: 100,
     onNewToken: token => {
         mainWindow.webContents.send('authToken', {token: token});
+    },
+    onError: (error) => {
+        mainWindow.webContents.send('authError', {error: error});
     }
 });
 

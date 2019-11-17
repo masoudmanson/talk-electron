@@ -117,6 +117,7 @@ body.light-theme {
     color: #666;
     padding: 12px;
     cursor: pointer;
+    text-align: right;
 }
 
 .light-theme #menu-wrapper ul li:hover {
@@ -125,15 +126,34 @@ body.light-theme {
 
 .light-theme #menu-theme {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
 }
 
-.light-theme #menu-theme span {
+.light-theme #menu-theme:before {
+    content: '';
     position: absolute;
-    right: 10px;
-    top: 9px;
-    font-size: 18px;
-    display: block;
-    color: #2a3940;
+    left: 10px;
+    width: 30px;
+    height: 15px;
+    background-color: #d5dbe3;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.light-theme #menu-theme:after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: #8fa0ad;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
 }
 
 .light-theme #title-bar-btns {
@@ -247,7 +267,7 @@ body.light-theme {
 .light-theme #menu-bar-btn {
     color: #777;
     font-size: 12px;
-    margin-top: -1px;
+    top: -1px;
 }
 
 .light-theme #max-btn:after {
@@ -273,6 +293,13 @@ body.light-theme {
 .light-theme #close-btn {
     color: #333;
     top: -6px !important;
+}
+
+.light-theme #main-close-btn {
+    cursor: pointer;
+    color: #8fa0ad;
+    font-size: 12px;
+    padding: 5px 0;
 }
 
 .light-theme #close-btn:hover {
@@ -495,8 +522,13 @@ input {
 }
 
 .light-theme .hF0PV {
-    color: #dea4ff !important;
+    color: #ff9eaf !important;
     font-weight: 300 !important;
+    padding-left: 5px !important;
+}
+
+.light-theme ._1Lqlk.cg_Am._3jFfs.skwyT span._19Gfw{
+    background-color: #ff9eaf !important;
 }
 
 .light-theme ._1Lqlk._3hI4C {
@@ -710,7 +742,8 @@ input {
 }
 
 .light-theme ._2SUne.aEoDW._1OxKw._3n9rL._237vm {
-    color: #7a325d !important;
+    color: #ff9eaf !important;
+    padding-left: 5px !important;
 }
 
 .light-theme ._1Lqlk._3QtvS.YxAJm {

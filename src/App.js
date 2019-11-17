@@ -66,6 +66,7 @@ export default class App extends Component {
             chatState: '',
             chatReady: false,
             nightMode: false,
+            authError: false,
             catchError: false,
             catchErrorMessage: '',
             catchErrorBtn: true,
@@ -109,7 +110,14 @@ export default class App extends Component {
         ipc.on('authToken', function (event, data) {
             self.setState({
                 token: data.token,
-                catchError: false
+                catchError: false,
+                authError: false
+            });
+        });
+
+        ipc.on('authError', function (event, data) {
+            self.setState({
+                authError: true
             });
         });
 
@@ -170,13 +178,14 @@ export default class App extends Component {
             this.chatSDK.reconnect();
             this.setState({
                 chatState: 'در حال اتصال ...',
-                chatConnecting: true
+                chatConnecting: true,
+                authError: false
             });
         }
     }
 
     onNewMessage(msg, t, tid) {
-        if(msg.participant.id != this.chatUser.id) {
+        if (msg.participant.id != this.chatUser.id) {
             ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
         }
     }
@@ -322,7 +331,11 @@ export default class App extends Component {
                     <div id="login-page">
                         <Loading type='ball_triangle' width={100} height={100}
                                  fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
-                        <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
+                        <div>
+                            <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
+                            <p id="main-close-btn" onClick={this.globalQuitWindow}>بستن</p>
+                        </div>
+
                     </div>
                 </div>
             );
@@ -336,8 +349,11 @@ export default class App extends Component {
                         <div id="error-page">
                             <Loading type='puff' width={50} height={50}
                                      fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
-                            {this.state.catchErrorMessage &&
-                            <p dir="auto" className={'error-message'}>{this.state.catchErrorMessage}</p>}
+                            {
+                                this.state.catchErrorMessage &&
+                                <p dir="auto" className={'error-message'}>{this.state.catchErrorMessage}</p>
+                            }
+
                             {
                                 this.state.catchErrorBtn &&
                                 <button id="login-btn" onClick={this.refreshTokenAndSocket}>تلاش دوباره</button>
@@ -350,11 +366,15 @@ export default class App extends Component {
                             <button id="menu-bar-btn" onClick={(e) => this.openTitlebarMenu(e)}>☰</button>
                             <div id="menu-wrapper">
                                 <ul>
-                                    <li id="menu-about" onClick={() => this.openModal('about')}>درباره تاک</li>
-                                    <li id="menu-theme"
-                                        onClick={this.changeTheme}>قالب برنامه <span>{(this.state.nightMode) ? '☾' : '☼'}</span>
+                                    <li id="menu-about"
+                                        onClick={() => this.openModal('about')}>درباره تاک
                                     </li>
-                                    <li id="menu-quit" onClick={this.globalQuitWindow}>خروج</li>
+                                    <li id="menu-theme"
+                                        onClick={this.changeTheme}>حالت شب
+                                    </li>
+                                    <li id="menu-quit"
+                                        onClick={this.globalQuitWindow}>خروج
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -382,11 +402,11 @@ export default class App extends Component {
                             originalServer/>
 
                         {
-                            !this.state.chatReady &&
+                            (!this.state.chatReady && !this.state.authError) &&
                             <div id="connection-state"
                                  className={(this.state.chatState ? 'has-content status-messages' : 'no-content status-messages')}
                                  style={{
-                                     bottom: this.state.updateNotification ? 60 : 10
+                                     bottom: (this.state.updateNotification) ? 60 : 10
                                  }}>
                                 <Loading type='puff' width={20} height={20}
                                          fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
@@ -412,6 +432,16 @@ export default class App extends Component {
                                 }
                             </div>
                         }
+
+                        {
+                            this.state.authError &&
+                            <div id="connection-state" className="has-content status-messages">
+                                <Loading type='puff' width={20} height={20}
+                                         fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
+                                خطائی رخ داد!
+                                <span onClick={this.refreshTokenAndSocket}>تلاش مجدد</span>
+                            </div>
+                        }
                     </div>
 
                     <CustomModal>
@@ -427,7 +457,7 @@ export default class App extends Component {
                         </p>
                         <p>در صورت مواجه با هر گونه خطایی لطفا با تیم چت در ارتباط باشید.</p>
                         {/*<img src={(this.state.nightMode) ? "assets/talk-logo2.png" : "assets/talk-logo.png"}*/}
-                             {/*alt="Talk Desktop"></img>*/}
+                        {/*alt="Talk Desktop"></img>*/}
                         <small className="version">{`Talk Desktop - Version ${this.state.version}`}</small>
                     </CustomModal>
                 </div>

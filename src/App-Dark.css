@@ -119,6 +119,7 @@ body.dark-theme {
     color: #d0d6db;
     padding: 12px;
     cursor: pointer;
+    text-align: right;
 }
 
 .dark-theme #menu-wrapper ul li:hover {
@@ -127,15 +128,34 @@ body.dark-theme {
 
 .dark-theme #menu-theme {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
 }
 
-.dark-theme #menu-theme span {
+.dark-theme #menu-theme:before {
+    content: '';
     position: absolute;
-    right: 12px;
-    top: 7px;
-    font-size: 19px;
-    display: block;
-    color: #ffd89d;
+    left: 10px;
+    width: 30px;
+    height: 15px;
+    background-color: #161d21;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.dark-theme #menu-theme:after {
+    content: '';
+    position: absolute;
+    left: 25px;
+    width: 15px;
+    height: 15px;
+    background-color: #ffd89d;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
 }
 
 .dark-theme #title-bar-btns {
@@ -250,7 +270,7 @@ body.dark-theme {
 .dark-theme #menu-bar-btn {
     color: #d0d6db;
     font-size: 12px;
-    margin-top: -1px;
+    top: -1px;
 }
 
 .dark-theme #max-btn:after {
@@ -277,6 +297,14 @@ body.dark-theme {
     color: #d0d6db;
     top: -5px !important;
 }
+
+.dark-theme #main-close-btn {
+    cursor: pointer;
+    color: #87959c;
+    font-size: 12px;
+    padding: 5px 0;
+}
+
 
 .dark-theme #close-btn:hover {
     background-color: #cb1458 !important;
@@ -508,8 +536,13 @@ body.dark-theme {
 }
 
 .dark-theme .hF0PV {
-    color: #ff9eaf !important;
+    color: #ffd89d !important;
     font-weight: 300 !important;
+    padding-left: 5px !important;
+}
+
+.dark-theme ._1Lqlk.cg_Am._3jFfs.skwyT span._19Gfw{
+    background-color: #ffd89d !important;
 }
 
 .dark-theme ._1Lqlk._3hI4C {
@@ -742,7 +775,8 @@ body.dark-theme {
 }
 
 .dark-theme ._2SUne.aEoDW._1OxKw._3n9rL._237vm {
-    color: #9f456e !important;
+    color: #ffd89d !important;
+    padding-left: 5px !important;
 }
 
 .dark-theme ._1Lqlk._3QtvS.YxAJm {
