@@ -1,4 +1,4 @@
-const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, shell} = require('electron');
+const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, shell, globalShortcut} = require('electron');
 const path = require("path");
 const isDev = require("electron-is-dev");
 const notifier = require('node-notifier');
@@ -256,7 +256,6 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-    // mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
@@ -294,6 +293,14 @@ function createWindow() {
     mainWindow.on('resize', () => {
         let {width, height} = mainWindow.getBounds();
         store.set('windowBounds', {width, height});
+    });
+
+    globalShortcut.register('CommandOrControl+f5', function() {
+        mainWindow.reload();
+    });
+
+    globalShortcut.register('alt+CommandOrControl+shift+f12', function() {
+        mainWindow.webContents.openDevTools();
     });
 }
 

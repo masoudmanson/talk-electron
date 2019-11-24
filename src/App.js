@@ -17,6 +17,9 @@ class ErrorBoundary extends React.Component {
             error: null,
             info: null
         };
+
+        this.reloadApp = this.reloadApp.bind(this);
+        this.closeApp = this.closeApp.bind(this);
     }
 
     componentDidCatch(error, info) {
@@ -27,13 +30,22 @@ class ErrorBoundary extends React.Component {
         });
     }
 
+    reloadApp() {
+        const window = electron.remote.getCurrentWindow();
+        window.reload();
+    }
+
+    closeApp() {
+        ipc.send('quit-app');
+    }
+
     render() {
         if (this.state.hasError) {
             return (
-                <div>
-                    <h1>Oops, something went wrong :(</h1>
-                    <p>The error: {this.state.error.toString()}</p>
-                    <p>Where it occured: {this.state.info.componentStack}</p>
+                <div id="error-page">
+                    <p dir="auto" className={'error-message'}>خطائی رخ داده است. لطفا دوباره تلاش نمائید!</p>
+                    <button id="login-btn" onClick={this.reloadApp}>تلاش دوباره</button>
+                    <p id="main-close-btn" onClick={this.closeApp}>بستن تاک</p>
                 </div>
             );
         }
@@ -90,6 +102,8 @@ export default class App extends Component {
         this.closeNotification = this.closeNotification.bind(this);
         this.refreshTokenAndSocket = this.refreshTokenAndSocket.bind(this);
         this.restartApp = this.restartApp.bind(this);
+        this.applicationReload = this.applicationReload.bind(this);
+        // this.refreshThreads = this.refreshThreads.bind(this);
     }
 
     componentDidMount() {
@@ -324,6 +338,15 @@ export default class App extends Component {
         });
     }
 
+    // refreshThreads() {
+    //     return true;
+    // }
+    //
+    applicationReload() {
+        const window = electron.remote.getCurrentWindow();
+        window.reload();
+    }
+
     render() {
         if (!this.state.token) {
             return (
@@ -333,9 +356,9 @@ export default class App extends Component {
                                  fill={(this.state.nightMode ? '#ffd89d' : '#7a325d')}/>
                         <div>
                             <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
-                            <p id="main-close-btn" onClick={this.globalQuitWindow}>بستن</p>
+                            <p id="main-close-btn" onClick={this.globalQuitWindow}>بستن تاک</p>
                         </div>
-
+                        خطائی رخ داده است. لطفا دوباره تلا
                     </div>
                 </div>
             );
@@ -372,8 +395,11 @@ export default class App extends Component {
                                     <li id="menu-theme"
                                         onClick={this.changeTheme}>حالت شب
                                     </li>
+                                    <li id="menu-reload"
+                                    onClick={this.applicationReload}>بارگزاری مجدد <small>(Ctrl + F5)</small>
+                                    </li>
                                     <li id="menu-quit"
-                                        onClick={this.globalQuitWindow}>خروج
+                                        onClick={this.globalQuitWindow}>خروج از تاک
                                     </li>
                                 </ul>
                             </div>
@@ -393,7 +419,8 @@ export default class App extends Component {
                             clearCache={this.clearCache}
                             onNewMessage={this.onNewMessage}
                             onNotificationClickHook={this.onNotificationClick}
-                            openThread={this.openThread}
+                            // openThread={this.openThread}
+                            // refreshThreads={this.refreshThreads}
                             onReady={this.onPodChatReady}
                             onRetryHook={this.onPodChatRetry}
                             onSignOutHook={this.onPodChatSignOut}
