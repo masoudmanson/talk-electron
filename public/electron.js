@@ -297,9 +297,9 @@ function createWindow() {
         store.set('windowBounds', {width, height});
     });
 
-    globalShortcut.register('CommandOrControl+f5', function() {
-        mainWindow.reload();
-    });
+    // globalShortcut.register('CommandOrControl+f5', function() {
+    //     mainWindow.reload();
+    // });
 
     globalShortcut.register('alt+CommandOrControl+shift+f12', function() {
         mainWindow.webContents.openDevTools();
