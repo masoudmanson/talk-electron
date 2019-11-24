@@ -358,7 +358,6 @@ export default class App extends Component {
                             <button id="login-btn" onClick={this.doLogin}>ورود به تاک</button>
                             <p id="main-close-btn" onClick={this.globalQuitWindow}>بستن تاک</p>
                         </div>
-                        خطائی رخ داده است. لطفا دوباره تلا
                     </div>
                 </div>
             );
@@ -395,9 +394,9 @@ export default class App extends Component {
                                     <li id="menu-theme"
                                         onClick={this.changeTheme}>حالت شب
                                     </li>
-                                    <li id="menu-reload"
-                                    onClick={this.applicationReload}>بارگزاری مجدد <small>(Ctrl + F5)</small>
-                                    </li>
+                                    {/*<li id="menu-reload"*/}
+                                    {/*onClick={this.applicationReload}>بارگزاری مجدد <small>(Ctrl + F5)</small>*/}
+                                    {/*</li>*/}
                                     <li id="menu-quit"
                                         onClick={this.globalQuitWindow}>خروج از تاک
                                     </li>
