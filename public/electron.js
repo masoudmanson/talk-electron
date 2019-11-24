@@ -184,28 +184,30 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('notify', (event, msg, name, img) => {
-        download(img, name, function (icon) {
-            if (icon) {
-                let message = (msg && msg.length) ? msg.replace(/:emoji#common-telegram#.\d+..\d+:/gi, '⚪️') : msg;
+        if(process.platform != 'win32') {
+            download(img, name, function (icon) {
+                if (icon) {
+                    let message = (msg && msg.length) ? msg.replace(/:emoji#common-telegram#.\d+..\d+:/gi, '⚪️') : msg;
 
-                if (!mainWindow.isVisible()) {
-                    notifier.notify({
-                        appName: 'talk.pod.land',
-                        title: name,
-                        message: message,
-                        icon: icon
-                    }, function () {
-                        // Do something after notification has been send
-                    });
+                    if (!mainWindow.isVisible()) {
+                        notifier.notify({
+                            appName: 'talk.pod.land',
+                            title: name,
+                            message: message,
+                            icon: icon
+                        }, function () {
+                            // Do something after notification has been send
+                        });
 
-                    notifier.on('click', function () {
-                        mainWindowFocus = true;
-                        mainWindow.show();
-                        mainWindow.focus();
-                    });
+                        notifier.on('click', function () {
+                            mainWindowFocus = true;
+                            mainWindow.show();
+                            mainWindow.focus();
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     ipcMain.on('app-version', (event) => {
