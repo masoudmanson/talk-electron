@@ -31,7 +31,7 @@ class OauthPKCE {
         this.clientId = options.clientId || null;
         this.redirectUri = options.redirectUri || 'talk://login';
         this.timeRemainingTimeout = options.timeRemainingTimeout || 90;
-        this.ssoBaseUrl = options.ssoBaseUrl || "https://accounts.pod.land/oauth2";
+        this.ssoBaseUrl = options.ssoBaseUrl || "https://accounts.pod.ir/oauth2";
         this.scope = options.scope || "profile";
         this.redirectTrigger = null;
         this.code = null;
@@ -158,7 +158,6 @@ class OauthPKCE {
 
     setCode(code) {
         this.code = code;
-
         if (this.refreshTokenStr) {
             return this.refreshToken().then(this.onNewToken);
         }
@@ -185,7 +184,8 @@ class OauthPKCE {
 
             const options = {
                 url: `${this.ssoBaseUrl}/token`,
-                form: baseObject
+                form: baseObject,
+                strictSSL: false
             };
 
             Request.post(options, (error, response, body) => {

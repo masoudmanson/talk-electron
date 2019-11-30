@@ -694,9 +694,11 @@ input {
     color: #7a325d !important;
 }
 
-.light-theme ._1Lqlk._1k2KS {
+.light-theme ._1Lqlk._1k2KS,
+.light-theme ._1Lqlk._1k2KS svg {
     color: #90677e !important;
     font-weight: 300 !important;
+    opacity: 0.7 !important;
 }
 
 .light-theme ._1Lqlk._2wyMJ {
@@ -1043,12 +1045,21 @@ input {
 }
 
 .light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD {
-    border-left: solid 6px rgba(122, 50, 93, 0.5) !important;
-    border-right: none !important;
+    /*border-left: solid 6px rgba(122, 50, 93, 0.5) !important;*/
+    /*border-right: none !important;*/
 }
 
 .light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD {
-    border-right: solid 6px rgba(122, 50, 93, 0.5) !important;
+    /*border-right: solid 6px rgba(122, 50, 93, 0.5) !important;*/
+    background-color: #7a325d !important;
+}
+
+.light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD .xY9gj,
+.light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD ._1Lqlk._1k2KS,
+.light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD ._1Lqlk._1k2KS svg,
+.light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD ._1Lqlk._22A7X.RfvgL p._2SUne,
+.light-theme ._1MUFa._2GXEe._1V5dP._2ybKw ._1Lqlk.LIX33._2z2Ea ._1Lqlk._2z2Ea._22A7X._1qySD ._1Lqlk._2z2Ea._1oKxl p._2SUne {
+    color: #fff !important;
 }
 
 .light-theme ._1Lqlk._2z2Ea._22A7X._1qySD {
@@ -1059,9 +1070,12 @@ input {
     background-color: #fff !important;
 }
 
+.light-theme ._1Lqlk._1fGbl,
 .light-theme ._1Lqlk._1fGbl._33y82 {
     background-color: rgba(255,255, 255, 0.4) !important;
     backdrop-filter: blur(5px);
+    z-index: 2;
+    border-top: none !important;
 }
 
 .light-theme ._1Lqlk._1fGbl._33y82 ._1Lqlk._1NSo_ svg,
@@ -1173,4 +1187,27 @@ input {
 
 .light-theme ._1Lqlk.cg_Am span._19Gfw {
     background-color: #7a325d;
+}
+
+
+/**
+ * Delete Modal
+ */
+
+.light-theme ._1Lqlk.zm2RJ._14xFN {
+    padding: 20px 25px !important;
+}
+
+.light-theme ._1Lqlk.zm2RJ._14xFN ul._1D92N li._1MUFa._3IhAb._1In1- {
+    padding: 8px 10px !important;
+    border-radius: 4px;
+    transition: background-color .15s;
+}
+
+.light-theme ._1Lqlk.zm2RJ._14xFN ul._1D92N li._1MUFa._3IhAb._1In1- p._2SUne._13D4d._3n9rL {
+    color: #7a325d !important;
+}
+
+.light-theme ._1Lqlk.zm2RJ._14xFN ul._1D92N li._1MUFa._3IhAb._1In1-:hover {
+    background-color: rgba(245, 32, 133, 0.1) !important;
 }

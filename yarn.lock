@@ -7157,10 +7157,21 @@ podauth@^1.2.6:
     query-string "^6.1.0"
     random-string "^0.2.0"
 
-podchat-browser@^4.10.18:
-  version "4.10.18"
-  resolved "https://registry.yarnpkg.com/podchat-browser/-/podchat-browser-4.10.18.tgz#feec577e330b39f2154f137826f4c98bf87f963b"
-  integrity sha512-YHVA9lBlCzdVSo5YthmubPbrSLWhHwS2wI81dld5sYe2u0tEoVThyV8Z3O2kffLjv1DMwy9qioJNlgAMuNbGHA==
+podauth@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/podauth/-/podauth-1.2.7.tgz#982cf458eab5b834a91d75561d58e46320509f65"
+  integrity sha512-7kdb0gCdD98WDTNwX2zyRBUHk/Yh2MvEc81KzgGaU8r3r2kp03lqnVdiz96leQiVCPskZcUNWk0NI3CDhAckhQ==
+  dependencies:
+    js-cookie "^2.2.0"
+    js-sha256 "^0.9.0"
+    jshashes "^1.0.7"
+    query-string "^6.1.0"
+    random-string "^0.2.0"
+
+podchat-browser@^4.10.24:
+  version "4.10.25"
+  resolved "https://registry.yarnpkg.com/podchat-browser/-/podchat-browser-4.10.25.tgz#68285896c30140a9bbb075aa2de941026b4a58e7"
+  integrity sha512-M38mL1cCdGC1HJ8NhBAKYBnjhY4oMSizNqOblKm4spDgLH7GfFStcY/xlZhkpbpt26kkWEs2G3RdIjmIB73OzQ==
   dependencies:
     crypto-js "^3.1.9-1"
     dexie "^2.0.4"
@@ -7168,18 +7179,18 @@ podchat-browser@^4.10.18:
     podasync-ws-only "^2.7.5"
     query-string "^6.8.1"
 
-podchatweb@^0.50.0:
-  version "0.50.0"
-  resolved "https://registry.yarnpkg.com/podchatweb/-/podchatweb-0.50.0.tgz#e1e9dbfaf621f15740172ce106dc3bd454269408"
-  integrity sha512-EQ/fW4xADiKCfK9F1GUthq8uzezSRhBjkXCH4P9Ojz/ovfVuXxTwsM6XjSdsIib7ZD9V4nsP5O+9t4Sb2Uz1BA==
+podchatweb@^0.52.5:
+  version "0.52.5"
+  resolved "https://registry.yarnpkg.com/podchatweb/-/podchatweb-0.52.5.tgz#db4384134b67c2eef77037ff5bfcbd2e335f1ac8"
+  integrity sha512-zr5rwEyM/ezfhFqscodfhn/mAJi0y5bIOfYpl4R6XYhTSiPWV5FTOUN3WX/ODF/5KImR0SLWNG9H7uWd5zOjuw==
   dependencies:
     "@babel/polyfill" "^7.2.5"
     classnames "^2.2.6"
     ifvisible.js "^2.0.10"
     moment "^2.22.2"
     persian-date "^1.0.5"
-    podauth "^1.2.6"
-    podchat-browser "^4.10.18"
+    podauth "^1.2.7"
+    podchat-browser "^4.10.24"
     push.js "^1.0.7"
     raduikit "^0.6.8"
     react-icons "^2.2.7"

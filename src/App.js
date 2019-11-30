@@ -61,12 +61,13 @@ export default class App extends Component {
         this.chatSDK = {};
         this.chatAgent = {};
         this.chatUser = {};
+        this.podChatWeb = {};
         this.connectionInterval = null;
         this.connectionTimeout = null;
         this.serverConfig = {
-            socketAddress: "wss://msg.pod.land/ws",
-            platformHost: "https://api.pod.land/srv/core",
-            fileServer: "https://core.pod.land"
+            socketAddress: "wss://msg.pod.ir/ws",
+            platformHost: "https://api.pod.ir/srv/core",
+            fileServer: "https://core.pod.ir"
         };
 
         this.state = {
@@ -102,8 +103,6 @@ export default class App extends Component {
         this.closeNotification = this.closeNotification.bind(this);
         this.refreshTokenAndSocket = this.refreshTokenAndSocket.bind(this);
         this.restartApp = this.restartApp.bind(this);
-        this.applicationReload = this.applicationReload.bind(this);
-        // this.refreshThreads = this.refreshThreads.bind(this);
     }
 
     componentDidMount() {
@@ -199,7 +198,7 @@ export default class App extends Component {
     }
 
     onNewMessage(msg, t, tid) {
-        if (msg.participant.id != this.chatUser.id) {
+        if (parseInt(msg.participant.id) !== parseInt(this.chatUser.id)) {
             ipc.send('notify', msg.message, msg.participant.name, msg.participant.image);
         }
     }
@@ -208,10 +207,11 @@ export default class App extends Component {
         ipc.send('openTalk');
     }
 
-    onPodChatReady(user, chatSDK) {
+    onPodChatReady(user, chatSDK, podChatWebThis) {
         this.chatSDK = chatSDK;
         this.chatUser = user;
         this.chatAgent = chatSDK.chatAgent;
+        this.podChatWeb = podChatWebThis;
 
         this.setState({chatReady: true});
 
@@ -219,7 +219,9 @@ export default class App extends Component {
             switch (state.socketState) {
                 case 1:
                     this.setState({chatState: '', chatReady: true});
-
+                    if(typeof this.podChatWeb.refreshThreads === "function") {
+                        this.podChatWeb.refreshThreads();
+                    }
                     break;
 
                 case 3:
@@ -338,15 +340,6 @@ export default class App extends Component {
         });
     }
 
-    // refreshThreads() {
-    //     return true;
-    // }
-    //
-    applicationReload() {
-        const window = electron.remote.getCurrentWindow();
-        window.reload();
-    }
-
     render() {
         if (!this.state.token) {
             return (
@@ -394,9 +387,6 @@ export default class App extends Component {
                                     <li id="menu-theme"
                                         onClick={this.changeTheme}>حالت شب
                                     </li>
-                                    {/*<li id="menu-reload"*/}
-                                    {/*onClick={this.applicationReload}>بارگزاری مجدد <small>(Ctrl + F5)</small>*/}
-                                    {/*</li>*/}
                                     <li id="menu-quit"
                                         onClick={this.globalQuitWindow}>خروج از تاک
                                     </li>
@@ -419,7 +409,6 @@ export default class App extends Component {
                             onNewMessage={this.onNewMessage}
                             onNotificationClickHook={this.onNotificationClick}
                             // openThread={this.openThread}
-                            // refreshThreads={this.refreshThreads}
                             onReady={this.onPodChatReady}
                             onRetryHook={this.onPodChatRetry}
                             onSignOutHook={this.onPodChatSignOut}
@@ -475,7 +464,7 @@ export default class App extends Component {
                         <p>جهت استفاده از نسخه ی وب به آدرس
                             <a target="_blank"
                                rel="noopener noreferrer"
-                               href="https://talk.pod.land"> Talk.pod.land </a> مراجعه نمائید. این نرم افزار تحت لیسانس
+                               href="https://talk.pod.ir"> Talk.pod.ir </a> مراجعه نمائید. این نرم افزار تحت لیسانس
                             <a target="_blank"
                                rel="noopener noreferrer"
                                href="https://github.com/masoudmanson/talk-electron/blob/master/LICENSE"> MIT </a> می
