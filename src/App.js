@@ -274,7 +274,10 @@ export default class App extends Component {
     }
 
     onPodChatRetry() {
-        return false;
+        // return false;
+        // TODO check this shit
+        // console.log('What da hell');
+        return Promise.resolve(this.state.token);
     }
 
     onPodChatSignOut() {

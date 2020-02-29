@@ -136,7 +136,7 @@ if (!gotTheLock) {
         checkForUpdateInterval && clearInterval(checkForUpdateInterval);
         checkForUpdateInterval = setInterval(() => {
             autoUpdater.checkForUpdatesAndNotify();
-        }, 15 * 60 * 1000);
+        }, 5 * 60 * 1000);
     });
 
     app.on("window-all-closed", () => {
@@ -258,7 +258,7 @@ function createWindow() {
     });
 
     mainWindow.removeMenu();
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.loadURL(isDev ? "http://localhost:3000" : url.format({
         pathname: path.join(__dirname, '../build/index.html'),
