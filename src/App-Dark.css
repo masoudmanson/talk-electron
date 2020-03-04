@@ -1332,6 +1332,7 @@ body.dark-theme {
 .dark-theme ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD ._1Lqlk._2jEAk ._1Lqlk._22A7X.RfvgL{
     background-color: #47606c !important;
     max-height: 100px !important;
+    margin-bottom: 10px !important;
 }
 
 .dark-theme ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD ._1Lqlk._2jEAk ._1Lqlk._22A7X.RfvgL:after {
@@ -1538,7 +1539,7 @@ body.dark-theme {
     -ms-transform: scale(1.3) !important;
     -o-transform: scale(1.3) !important;
     transform: scale(1.3) !important;
-    margin: -2px 3px 0 !important;
+    margin: -3px 3px 0 !important;
 }
 
 .dark-theme ._1Lqlk.YXJz5 ._1Lqlk._18RRi {

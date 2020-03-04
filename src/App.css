@@ -1201,6 +1201,8 @@ input {
 
 .light-theme ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD ._1Lqlk._2jEAk ._1Lqlk._22A7X.RfvgL {
     background-color: #f6f6f6 !important;
+    max-height: 100px !important;
+    margin-bottom: 10px !important;
 }
 
 .light-theme ._1Lqlk._2z2Ea._22A7X._1XCcV._1qySD ._1Lqlk._2jEAk ._1Lqlk._22A7X.RfvgL:after {
@@ -1374,7 +1376,7 @@ input {
     -ms-transform: scale(1.3) !important;
     -o-transform: scale(1.3) !important;
     transform: scale(1.3) !important;
-    margin: -2px 3px 0 !important;
+    margin: -3px 3px 0 !important;
 }
 
 .light-theme ._1Lqlk.YXJz5 ._1Lqlk._18RRi {
