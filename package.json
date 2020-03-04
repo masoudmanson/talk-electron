@@ -83,7 +83,7 @@
     "build": "yarn react-build && electron-builder",
     "start": "concurrently \"cross-env NODE_OPTIONS='--max-old-space-size=8192' BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
     "local-build": "yarn react-build && electron-builder build --win --publish never",
-    "deploy": "yarn react-build && electron-builder build --win --publish always"
+    "deploy": "cross-env NODE_OPTIONS='--max-old-space-size=8192' yarn react-build && electron-builder build --win --publish always"
   },
   "eslintConfig": {
     "extends": "react-app"
