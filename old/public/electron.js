@@ -1,26 +1,15 @@
-const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, shell, globalShortcut} = require('electron');
+const {app, Menu, Tray, nativeImage, BrowserWindow, ipcMain, protocol, remote, shell} = require('electron');
 const path = require("path");
 const isDev = require("electron-is-dev");
 const notifier = require('node-notifier');
 const url = require('url');
 const Store = require('./store.js');
 const PKCE = require('./pkce.js');
-const {autoUpdater} = require('electron-updater');
-const contextMenu = require('electron-context-menu');
-
-var opsys = process.platform;
-if (opsys == "darwin") {
-    opsys = "mac";
-} else if (opsys == "win32" || opsys == "win64") {
-    opsys = "win";
-} else if (opsys == "linux") {
-    opsys = "lnx";
-}
 
 const store = new Store({
     configName: 'user-preferences',
     defaults: {
-        windowBounds: {width: 1100, height: 620},
+        windowBounds: {width: 1200, height: 700},
         codeVerifier: '',
         refreshToken: '',
         nightMode: false
@@ -31,25 +20,16 @@ const Auth = new PKCE({
     clientId: "88413l69cd4051a039cf115ee4e073",
     scope: "social:write",
     redirectUri: "talk://login",
-    timeRemainingTimeout: 100,
+    timeRemainingTimeout: 300,
     onNewToken: token => {
         mainWindow.webContents.send('authToken', {token: token});
-    },
-    onError: (error) => {
-        mainWindow.webContents.send('authError', {error: error});
     }
-});
-
-contextMenu({
-    showLookUpSelection: false,
-    showCopyImage: false
 });
 
 var appIcon = null;
 let mainWindow;
 let mainWindowFocus = false;
 let deeplinkingUrl;
-let checkForUpdateInterval;
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -94,7 +74,7 @@ if (!gotTheLock) {
                     Auth.setCode(finalUrl.query.substring(5));
                 }
             } catch (e) {
-                console.log(e);
+                logEverywhere(e);
             }
         });
 
@@ -124,19 +104,6 @@ if (!gotTheLock) {
 
         appIcon.setToolTip('Talk Desktop');
         appIcon.setContextMenu(contextMenu);
-
-        /*
-         * Check for updates for the first time
-         */
-        autoUpdater.checkForUpdatesAndNotify();
-
-        /*
-         * Check for updates periodically every 15 minutes
-         */
-        checkForUpdateInterval && clearInterval(checkForUpdateInterval);
-        checkForUpdateInterval = setInterval(() => {
-            autoUpdater.checkForUpdatesAndNotify();
-        }, 5 * 60 * 1000);
     });
 
     app.on("window-all-closed", () => {
@@ -184,64 +151,28 @@ if (!gotTheLock) {
     });
 
     ipcMain.on('notify', (event, msg, name, img) => {
-        if(process.platform != 'win32') {
-            download(img, name, function (icon) {
-                if (icon) {
-                    let message = (msg && msg.length) ? msg.replace(/:emoji#common-telegram#.\d+..\d+:/gi, '⚪️') : msg;
+        download(img, name, function (icon) {
+            if (icon) {
+                let message = (msg && msg.length) ? msg.replace(/:emoji#common-telegram#.\d+..\d+:/gi, '⚪️') : msg;
 
-                    if (!mainWindow.isVisible()) {
-                        notifier.notify({
-                            appName: 'talk.pod.land',
-                            title: name,
-                            message: message,
-                            icon: icon
-                        }, function () {
-                            // Do something after notification has been send
-                        });
+                if (!mainWindow.isVisible()) {
+                    notifier.notify({
+                        appName: 'talk.pod.land',
+                        title: name,
+                        message: message,
+                        icon: icon
+                    }, function () {
+                        // Do something after notification has been send
+                    });
 
-                        notifier.on('click', function () {
-                            mainWindowFocus = true;
-                            mainWindow.show();
-                            mainWindow.focus();
-                        });
-                    }
+                    notifier.on('click', function () {
+                        mainWindowFocus = true;
+                        mainWindow.show();
+                        mainWindow.focus();
+                    });
                 }
-            });
-        }
-    });
-
-    ipcMain.on('app-version', (event) => {
-        mainWindow.webContents.send('app-version', {version: app.getVersion()});
-    });
-
-    autoUpdater.on('update-available', () => {
-        mainWindow.webContents.send('update-available');
-    });
-
-    autoUpdater.on('update-downloaded', () => {
-        mainWindow.webContents.send('update-downloaded');
-    });
-
-    ipcMain.on('restart-app', () => {
-        setTimeout(() => {
-            app.removeAllListeners("window-all-closed");
-
-            var browserWindows = BrowserWindow.getAllWindows();
-            browserWindows.forEach(function (browserWindow) {
-                browserWindow.removeAllListeners('close');
-            });
-
-            if (mainWindow != null) {
-                mainWindow.close();
             }
-
-            autoUpdater.quitAndInstall(false);
-        }, 5000);
-    });
-
-    ipcMain.on('relunch-app', () => {
-        app.relaunch()
-        app.exit()
+        });
     });
 }
 
@@ -302,14 +233,6 @@ function createWindow() {
         let {width, height} = mainWindow.getBounds();
         store.set('windowBounds', {width, height});
     });
-
-    // globalShortcut.register('CommandOrControl+f5', function() {
-    //     mainWindow.reload();
-    // });
-
-    globalShortcut.register('alt+CommandOrControl+shift+f12', function() {
-        mainWindow.webContents.openDevTools();
-    });
 }
 
 var download = function (uri, filename, callback) {
@@ -329,3 +252,10 @@ var download = function (uri, filename, callback) {
     //     }
     // });
 };
+
+function logEverywhere(s) {
+    console.log(s);
+    if (mainWindow && mainWindow.webContents) {
+        mainWindow.webContents.executeJavaScript(`console.log(${JSON.stringify(s)})`);
+    }
+}

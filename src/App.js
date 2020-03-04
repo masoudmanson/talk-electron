@@ -65,9 +65,14 @@ export default class App extends Component {
         this.connectionInterval = null;
         this.connectionTimeout = null;
         this.serverConfig = {
+            // M A I N   S E R V E R
             socketAddress: "wss://msg.pod.ir/ws",
             platformHost: "https://api.pod.ir/srv/core",
             fileServer: "https://core.pod.ir"
+            // S A N D B O X
+            // socketAddress: "wss://chat-sandbox.pod.ir/ws",
+            // platformHost: "https://sandbox.pod.ir:8043/srv/basic-platform",
+            // fileServer: "https://core.pod.ir"
         };
 
         this.state = {
@@ -169,8 +174,10 @@ export default class App extends Component {
     }
 
     refreshTokenAndSocket() {
-        this.doLogin();
-        this.forceReconnect();
+        // this.doLogin();
+        // this.forceReconnect();
+
+        ipc.send('relunch-app');
     }
 
     restartApp() {
@@ -187,14 +194,15 @@ export default class App extends Component {
     }
 
     forceReconnect() {
-        if (!this.state.chatReady) {
+        // TODO: Check to see if this if statement is needed or not?
+        // if (!this.state.chatReady) {
             this.chatSDK.reconnect();
             this.setState({
                 chatState: 'در حال اتصال ...',
                 chatConnecting: true,
                 authError: false
             });
-        }
+        // }
     }
 
     onNewMessage(msg, t, tid) {
@@ -274,9 +282,19 @@ export default class App extends Component {
     }
 
     onPodChatRetry() {
-        // return false;
-        // TODO check this shit
-        // console.log('What da hell');
+        /*
+         * This is what that happens at PodChatWeb,
+         * So inorder to satisfy the situation
+         * We have to return a Promise
+         * And pass the Token to it
+         *
+         * chatRetryHook().then(token => {
+         *   chatInstance.setToken(token);
+         *   chatInstance.reconnect();
+         * });
+         *
+         */
+
         return Promise.resolve(this.state.token);
     }
 
@@ -407,11 +425,11 @@ export default class App extends Component {
                     <div id="content" onClick={this.globalMenuCloser}>
                         <PodchatJSX
                             // disableNotification
+                            // openThread={this.openThread}
                             token={this.state.token}
                             clearCache={this.clearCache}
                             onNewMessage={this.onNewMessage}
                             onNotificationClickHook={this.onNotificationClick}
-                            // openThread={this.openThread}
                             onReady={this.onPodChatReady}
                             onRetryHook={this.onPodChatRetry}
                             onSignOutHook={this.onPodChatSignOut}
