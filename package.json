@@ -1,6 +1,6 @@
 {
   "name": "Talk-Desktop",
-  "version": "0.1.51",
+  "version": "1.0.0",
   "private": false,
   "description": "Talk Messaging Platform Desktop Application",
   "author": "Masoud Amjadi <masoudmanson@gmail.com>",
@@ -65,14 +65,13 @@
     "electron-modal": "^1.0.0",
     "electron-updater": "^4.1.2",
     "node-notifier": "^6.0.0",
-    "podchatweb": "^0.52.9",
+    "podchatweb": "^1.4.7",
     "protocol": "^0.1.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-loading-components": "^1.1.12",
     "react-scripts": "^3.3.0",
-    "url": "^0.11.0",
-    "webpack": "^4.41.2"
+    "url": "^0.11.0"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -82,7 +81,7 @@
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
     "build": "yarn react-build && electron-builder",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "start": "concurrently \"cross-env NODE_OPTIONS='--max-old-space-size=8192' BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
     "local-build": "yarn react-build && electron-builder build --win --publish never",
     "deploy": "yarn react-build && electron-builder build --win --publish always"
   },
